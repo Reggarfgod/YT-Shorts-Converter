@@ -57,9 +57,10 @@ if (-not $ffmpegExists) {
         $zipFile = "ffmpeg.zip"
         $extractFolder = "ffmpeg_temp"
 
-        Invoke-WebRequest `
-        -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" `
-        -OutFile $zipFile
+      Invoke-WebRequest `
+      -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" `
+      -OutFile $zipFile `
+      -UseBasicParsing
 
         Write-Host ""
         Write-Host "Extracting FFmpeg..."
