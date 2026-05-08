@@ -17,49 +17,79 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 $repo = "https://raw.githubusercontent.com/Reggarfgod/YT-Shorts-Converter/main"
 
 # =========================================================
-# LOAD SCRIPT FUNCTION
+# LOAD GITHUB SCRIPT FUNCTION
 # =========================================================
 
-function Load-Script {
+function Load-GitHubScript {
 
     param (
 
-        [string]$LocalPath,
-        [string]$RemotePath
+        [string]$Path
     )
 
-    # =====================================================
-    # LOAD LOCAL FILE
-    # =====================================================
+    $url = "$repo/$Path"
 
-    if (
-        $PSScriptRoot -and
-        (Test-Path $LocalPath)
-    ) {
+    Write-Host ""
+    Write-Host "================================================="
+    Write-Host "Loading Script:"
+    Write-Host $url
+    Write-Host "================================================="
+    Write-Host ""
 
-        . $LocalPath
+    try {
 
-        Write-Host ""
-        Write-Host "[LOCAL] Loaded:"
-        Write-Host $LocalPath
-        Write-Host ""
-    }
+        # =============================================
+        # DOWNLOAD FILE
+        # =============================================
 
-    # =====================================================
-    # LOAD FROM GITHUB
-    # =====================================================
-
-    else {
-
-        Write-Host ""
-        Write-Host "[GITHUB] Loading:"
-        Write-Host $RemotePath
-        Write-Host ""
-
-        iex (
-            iwr "$repo/$RemotePath" `
+        $scriptContent = (
+            iwr $url `
             -UseBasicParsing
         ).Content
+
+        # =============================================
+        # CHECK EMPTY FILE
+        # =============================================
+
+        if ([string]::IsNullOrWhiteSpace($scriptContent)) {
+
+            Write-Host ""
+            Write-Host "ERROR: EMPTY FILE!"
+            Write-Host $url
+            Write-Host ""
+
+            return
+        }
+
+        # =============================================
+        # EXECUTE SCRIPT
+        # =============================================
+
+        iex $scriptContent
+
+        Write-Host ""
+        Write-Host "SUCCESSFULLY LOADED!"
+        Write-Host ""
+
+    }
+    catch {
+
+        Write-Host ""
+        Write-Host "================================================="
+        Write-Host "FAILED TO LOAD SCRIPT!"
+        Write-Host "================================================="
+        Write-Host ""
+
+        Write-Host "URL:"
+        Write-Host $url
+        Write-Host ""
+
+        Write-Host "ERROR:"
+        Write-Host $_
+        Write-Host ""
+
+        Pause
+        exit
     }
 }
 
@@ -67,29 +97,61 @@ function Load-Script {
 # LOAD CORE FILES
 # =========================================================
 
-Load-Script `
-"$PSScriptRoot\core\ui.ps1" `
-"core/ui.ps1"
+Load-GitHubScript "core/ui.ps1"
 
-Load-Script `
-"$PSScriptRoot\core\output.ps1" `
-"core/output.ps1"
+Load-GitHubScript "core/output.ps1"
 
-Load-Script `
-"$PSScriptRoot\core\ffmpeg.ps1" `
-"core/ffmpeg.ps1"
+Load-GitHubScript "core/ffmpeg.ps1"
 
-Load-Script `
-"$PSScriptRoot\core\videos.ps1" `
-"core/videos.ps1"
+Load-GitHubScript "core/videos.ps1"
 
-Load-Script `
-"$PSScriptRoot\core\modes.ps1" `
-"core/modes.ps1"
+Load-GitHubScript "core/modes.ps1"
 
-Load-Script `
-"$PSScriptRoot\core\converter.ps1" `
-"core/converter.ps1"
+Load-GitHubScript "core/converter.ps1"
+
+# =========================================================
+# CHECK FUNCTIONS LOADED
+# =========================================================
+
+if (-not (Get-Command Show-Banner -ErrorAction SilentlyContinue)) {
+
+    Write-Host ""
+    Write-Host "ERROR: Show-Banner function not loaded!"
+    Write-Host ""
+
+    Pause
+    exit
+}
+
+if (-not (Get-Command Get-VideoSelection -ErrorAction SilentlyContinue)) {
+
+    Write-Host ""
+    Write-Host "ERROR: Get-VideoSelection function not loaded!"
+    Write-Host ""
+
+    Pause
+    exit
+}
+
+if (-not (Get-Command Get-ModeSelection -ErrorAction SilentlyContinue)) {
+
+    Write-Host ""
+    Write-Host "ERROR: Get-ModeSelection function not loaded!"
+    Write-Host ""
+
+    Pause
+    exit
+}
+
+if (-not (Get-Command Start-Conversion -ErrorAction SilentlyContinue)) {
+
+    Write-Host ""
+    Write-Host "ERROR: Start-Conversion function not loaded!"
+    Write-Host ""
+
+    Pause
+    exit
+}
 
 # =========================================================
 # MAIN LOOP
@@ -97,15 +159,15 @@ Load-Script `
 
 do {
 
-    # =====================================================
-    # SHOW BANNER
-    # =====================================================
+    # =============================================
+    # SHOW UI
+    # =============================================
 
     Show-Banner
 
-    # =====================================================
+    # =============================================
     # SELECT VIDEO
-    # =====================================================
+    # =============================================
 
     $video = Get-VideoSelection
 
@@ -114,9 +176,9 @@ do {
         break
     }
 
-    # =====================================================
+    # =============================================
     # SELECT MODE
-    # =====================================================
+    # =============================================
 
     $modeData = Get-ModeSelection
 
@@ -125,18 +187,18 @@ do {
         break
     }
 
-    # =====================================================
+    # =============================================
     # START CONVERSION
-    # =====================================================
+    # =============================================
 
     Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
         -Filter $modeData.Filter
 
-    # =====================================================
+    # =============================================
     # NEXT ACTION
-    # =====================================================
+    # =============================================
 
     Write-Host ""
     Write-Host "================================================="
