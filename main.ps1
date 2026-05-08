@@ -4,13 +4,22 @@
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
-# LOAD FILES
-. "$PSScriptRoot\core\ui.ps1"
-. "$PSScriptRoot\core\output.ps1"
-. "$PSScriptRoot\core\ffmpeg.ps1"
-. "$PSScriptRoot\core\videos.ps1"
-. "$PSScriptRoot\core\modes.ps1"
-. "$PSScriptRoot\core\converter.ps1"
+# =========================================================
+# LOAD CORE FILES FROM GITHUB
+# =========================================================
+
+$repo = "https://raw.githubusercontent.com/Reggarfgod/YT-Shorts-Converter/main"
+
+iex (iwr "$repo/core/ui.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/output.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/ffmpeg.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
+
+# =========================================================
+# MAIN LOOP
+# =========================================================
 
 do {
 
