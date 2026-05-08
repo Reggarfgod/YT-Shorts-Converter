@@ -5,17 +5,61 @@
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
 # =========================================================
-# LOAD CORE FILES FROM GITHUB
+# REPO URL
 # =========================================================
 
 $repo = "https://raw.githubusercontent.com/Reggarfgod/YT-Shorts-Converter/main"
 
-iex (iwr "$repo/core/ui.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/output.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/ffmpeg.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
+# =========================================================
+# LOAD FUNCTION
+# =========================================================
+
+function Load-Script {
+
+    param (
+
+        [string]$LocalPath,
+        [string]$RemotePath
+    )
+
+    # =============================================
+    # LOAD LOCAL FILE IF EXISTS
+    # =============================================
+
+    if (Test-Path $LocalPath) {
+
+        . $LocalPath
+
+        Write-Host "[LOCAL] Loaded $LocalPath"
+    }
+
+    # =============================================
+    # OTHERWISE LOAD FROM GITHUB
+    # =============================================
+
+    else {
+
+        Write-Host "[GITHUB] Loading $RemotePath"
+
+        iex (iwr "$repo/$RemotePath" -UseBasicParsing).Content
+    }
+}
+
+# =========================================================
+# LOAD CORE FILES
+# =========================================================
+
+Load-Script "$PSScriptRoot\core\ui.ps1" "core/ui.ps1"
+
+Load-Script "$PSScriptRoot\core\output.ps1" "core/output.ps1"
+
+Load-Script "$PSScriptRoot\core\ffmpeg.ps1" "core/ffmpeg.ps1"
+
+Load-Script "$PSScriptRoot\core\videos.ps1" "core/videos.ps1"
+
+Load-Script "$PSScriptRoot\core\modes.ps1" "core/modes.ps1"
+
+Load-Script "$PSScriptRoot\core\converter.ps1" "core/converter.ps1"
 
 # =========================================================
 # MAIN LOOP
@@ -28,12 +72,14 @@ do {
     $video = Get-VideoSelection
 
     if ($null -eq $video) {
+
         break
     }
 
     $modeData = Get-ModeSelection
 
     if ($null -eq $modeData) {
+
         break
     }
 
