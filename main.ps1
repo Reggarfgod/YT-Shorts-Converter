@@ -16,7 +16,6 @@ iex (iwr "$repo/core/ffmpeg.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/ai_title.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -36,39 +35,12 @@ do {
         break
     }
 
-    # =====================================================
-    # GENERATE AI TITLE
-    # =====================================================
-
-    $titleText = Get-AutoTitle `
-        -VideoFile $video.FullName
-
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "AI TITLE:"
-    Write-Host $titleText
-    Write-Host "================================================="
-    Write-Host ""
-
-    # =====================================================
-    # SELECT MODE
-    # =====================================================
-
     $modeData = Get-ModeSelection
 
     if ($null -eq $modeData) {
         break
     }
 
-    # =====================================================
-    # ADD TITLE TO VIDEO
-    # =====================================================
-
-    $modeData.Filter += ",drawtext=text='$titleText':fontcolor=white:fontsize=60:borderw=4:bordercolor=black:x=(w-text_w)/2:y=780"
-
-    # =====================================================
-    # START CONVERSION
-    # =====================================================
 
     Start-Conversion `
         -Video $video `
