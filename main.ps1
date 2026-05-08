@@ -1,17 +1,23 @@
 # =========================================================
+# VIDEO RATIO CONVERTER
 # MAIN FILE
+# Created By Reggarf
+# =========================================================
+
+# =========================================================
+# BYPASS EXECUTION POLICY
 # =========================================================
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
 # =========================================================
-# REPO URL
+# GITHUB REPO
 # =========================================================
 
 $repo = "https://raw.githubusercontent.com/Reggarfgod/YT-Shorts-Converter/main"
 
 # =========================================================
-# LOAD FUNCTION
+# LOAD SCRIPT FUNCTION
 # =========================================================
 
 function Load-Script {
@@ -22,26 +28,38 @@ function Load-Script {
         [string]$RemotePath
     )
 
-    # =============================================
-    # LOAD LOCAL FILE IF EXISTS
-    # =============================================
+    # =====================================================
+    # LOAD LOCAL FILE
+    # =====================================================
 
-    if (Test-Path $LocalPath) {
+    if (
+        $PSScriptRoot -and
+        (Test-Path $LocalPath)
+    ) {
 
         . $LocalPath
 
-        Write-Host "[LOCAL] Loaded $LocalPath"
+        Write-Host ""
+        Write-Host "[LOCAL] Loaded:"
+        Write-Host $LocalPath
+        Write-Host ""
     }
 
-    # =============================================
-    # OTHERWISE LOAD FROM GITHUB
-    # =============================================
+    # =====================================================
+    # LOAD FROM GITHUB
+    # =====================================================
 
     else {
 
-        Write-Host "[GITHUB] Loading $RemotePath"
+        Write-Host ""
+        Write-Host "[GITHUB] Loading:"
+        Write-Host $RemotePath
+        Write-Host ""
 
-        iex (iwr "$repo/$RemotePath" -UseBasicParsing).Content
+        iex (
+            iwr "$repo/$RemotePath" `
+            -UseBasicParsing
+        ).Content
     }
 }
 
@@ -49,17 +67,29 @@ function Load-Script {
 # LOAD CORE FILES
 # =========================================================
 
-Load-Script "$PSScriptRoot\core\ui.ps1" "core/ui.ps1"
+Load-Script `
+"$PSScriptRoot\core\ui.ps1" `
+"core/ui.ps1"
 
-Load-Script "$PSScriptRoot\core\output.ps1" "core/output.ps1"
+Load-Script `
+"$PSScriptRoot\core\output.ps1" `
+"core/output.ps1"
 
-Load-Script "$PSScriptRoot\core\ffmpeg.ps1" "core/ffmpeg.ps1"
+Load-Script `
+"$PSScriptRoot\core\ffmpeg.ps1" `
+"core/ffmpeg.ps1"
 
-Load-Script "$PSScriptRoot\core\videos.ps1" "core/videos.ps1"
+Load-Script `
+"$PSScriptRoot\core\videos.ps1" `
+"core/videos.ps1"
 
-Load-Script "$PSScriptRoot\core\modes.ps1" "core/modes.ps1"
+Load-Script `
+"$PSScriptRoot\core\modes.ps1" `
+"core/modes.ps1"
 
-Load-Script "$PSScriptRoot\core\converter.ps1" "core/converter.ps1"
+Load-Script `
+"$PSScriptRoot\core\converter.ps1" `
+"core/converter.ps1"
 
 # =========================================================
 # MAIN LOOP
@@ -67,7 +97,15 @@ Load-Script "$PSScriptRoot\core\converter.ps1" "core/converter.ps1"
 
 do {
 
+    # =====================================================
+    # SHOW BANNER
+    # =====================================================
+
     Show-Banner
+
+    # =====================================================
+    # SELECT VIDEO
+    # =====================================================
 
     $video = Get-VideoSelection
 
@@ -76,6 +114,10 @@ do {
         break
     }
 
+    # =====================================================
+    # SELECT MODE
+    # =====================================================
+
     $modeData = Get-ModeSelection
 
     if ($null -eq $modeData) {
@@ -83,10 +125,18 @@ do {
         break
     }
 
+    # =====================================================
+    # START CONVERSION
+    # =====================================================
+
     Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
         -Filter $modeData.Filter
+
+    # =====================================================
+    # NEXT ACTION
+    # =====================================================
 
     Write-Host ""
     Write-Host "================================================="
@@ -98,3 +148,11 @@ do {
     $next = Read-Host "Enter choice"
 
 } while ($next -ne "2")
+
+# =========================================================
+# EXIT
+# =========================================================
+
+Write-Host ""
+Write-Host "Goodbye!"
+Write-Host ""
