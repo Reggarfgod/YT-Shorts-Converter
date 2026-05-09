@@ -29,19 +29,21 @@ function Start-Conversion {
         Write-Host "End Time   : $EndTime"
         Write-Host ""
 
-        ffmpeg -y `
-        -ss $StartTime `
-        -to $EndTime `
-        -i "$inputFile" `
-        -filter_complex "$Filter" `
-        -r 60 `
-        -c:v libx264 `
-        -preset medium `
-        -crf 20 `
-        -pix_fmt yuv420p `
-        -c:a aac `
-        -b:a 192k `
-        "$outputFile"
+      ffmpeg -y `
+-ss $StartTime `
+-to $EndTime `
+-i "$inputFile" `
+-filter_complex $Filter `
+-map "[v]" `
+-r 60 `
+-s 1080x1920 `
+-c:v libx264 `
+-preset medium `
+-crf 20 `
+-pix_fmt yuv420p `
+-c:a aac `
+-b:a 192k `
+"$outputFile"
 
         Write-Host ""
         Write-Host "================================================="
