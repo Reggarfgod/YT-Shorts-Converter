@@ -108,9 +108,9 @@ function Get-ModeSelection {
 
     return @{
 
-        Ratio = "9x16_TopCrop"
+        Ratio = "TopCrop_BottomFull"
 
-        Filter = '[0:v]split=2[top][bottom];[top]crop=in_w:in_h*0.75:0:0,scale=1080:1500[topv];[bottom]scale=1080:420:force_original_aspect_ratio=increase,crop=1080:420[bottomv];[topv][bottomv]vstack=inputs=2[v]'
+        Filter = '[0:v]split=2[top][bottom];[top]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,scale=1080:1500[topv];[bottom]scale=1080:-1:force_original_aspect_ratio=decrease,crop=1080:420[bottomv];[topv][bottomv]vstack=inputs=2'
     }
 }
         # =====================================================
