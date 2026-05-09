@@ -35,6 +35,7 @@ ffmpeg -y `
 -i "$inputFile" `
 -filter_complex $Filter `
 -map "[outv]" `
+-map 0:a? `
 -r 60 `
 -s 1080x1920 `
 -c:v libx264 `
@@ -43,6 +44,7 @@ ffmpeg -y `
 -pix_fmt yuv420p `
 -c:a aac `
 -b:a 192k `
+-shortest `
 "$outputFile"
 
         Write-Host ""
