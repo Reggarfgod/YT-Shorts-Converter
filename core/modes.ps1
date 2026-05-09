@@ -9,16 +9,12 @@ function Get-ModeSelection {
     Write-Host "4. 4:3 Center Crop"
     Write-Host "5. 1:1 In 9:16 Blur"
     Write-Host "6. 4:3 In 9:16 Blur"
-    Write-Host "7. Large Top Crop + Small Full Video"
+    Write-Host "7. Top Crop + Bottom Full Video"
     Write-Host ""
 
     $mode = Read-Host "Enter mode number"
 
     switch ($mode) {
-
-        # =====================================================
-        # 9:16 CENTER CROP
-        # =====================================================
 
         "1" {
 
@@ -26,13 +22,9 @@ function Get-ModeSelection {
 
                 Ratio = "9x16_Crop"
 
-                Filter = 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920'
+                Filter = 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[outv]'
             }
         }
-
-        # =====================================================
-        # 9:16 BLUR BACKGROUND
-        # =====================================================
 
         "2" {
 
@@ -40,13 +32,9 @@ function Get-ModeSelection {
 
                 Ratio = "9x16_Blur"
 
-                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:10[bg];[0:v]scale=1080:-1:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:10[bg];[0:v]scale=1080:-1:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2[outv]'
             }
         }
-
-        # =====================================================
-        # 1:1 CENTER CROP
-        # =====================================================
 
         "3" {
 
@@ -54,13 +42,9 @@ function Get-ModeSelection {
 
                 Ratio = "1x1"
 
-                Filter = 'scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080'
+                Filter = 'scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080[outv]'
             }
         }
-
-        # =====================================================
-        # 4:3 CENTER CROP
-        # =====================================================
 
         "4" {
 
@@ -68,13 +52,9 @@ function Get-ModeSelection {
 
                 Ratio = "4x3"
 
-                Filter = 'scale=1440:1080:force_original_aspect_ratio=increase,crop=1440:1080'
+                Filter = 'scale=1440:1080:force_original_aspect_ratio=increase,crop=1440:1080[outv]'
             }
         }
-
-        # =====================================================
-        # 1:1 IN 9:16 BLUR
-        # =====================================================
 
         "5" {
 
@@ -82,13 +62,9 @@ function Get-ModeSelection {
 
                 Ratio = "1x1_Blur_9x16"
 
-                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2[outv]'
             }
         }
-
-        # =====================================================
-        # 4:3 IN 9:16 BLUR
-        # =====================================================
 
         "6" {
 
@@ -96,26 +72,19 @@ function Get-ModeSelection {
 
                 Ratio = "4x3_Blur_9x16"
 
-                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:810:force_original_aspect_ratio=increase,crop=1080:810[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:810:force_original_aspect_ratio=increase,crop=1080:810[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2[outv]'
             }
         }
 
-        # =====================================================
-        # LARGE TOP CROP + SMALL FULL VIDEO
-        # =====================================================
+        "7" {
 
-"7" {
+            return @{
 
-    return @{
+                Ratio = "TopCrop_BottomFull"
 
-        Ratio = "TopCrop_BottomFull"
-
-        Filter = '[0:v]split=2[top][bottom];[top]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,scale=1080:1500[topv];[bottom]scale=1080:-1:force_original_aspect_ratio=decrease,crop=1080:420[bottomv];[topv][bottomv]vstack=inputs=2[outv]'
-    }
-}
-        # =====================================================
-        # INVALID
-        # =====================================================
+                Filter = '[0:v]split=2[top][bottom];[top]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,scale=1080:1500[topv];[bottom]scale=1080:-1:force_original_aspect_ratio=decrease,crop=1080:420[bottomv];[topv][bottomv]vstack=inputs=2[outv]'
+            }
+        }
 
         default {
 
