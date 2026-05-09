@@ -26,7 +26,7 @@ function Get-ModeSelection {
 
                 Ratio = "9x16_Crop"
 
-                Filter = "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920"
+                Filter = 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920'
             }
         }
 
@@ -40,7 +40,7 @@ function Get-ModeSelection {
 
                 Ratio = "9x16_Blur"
 
-                Filter = "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:10[bg];[0:v]scale=1080:-1:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2"
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:10[bg];[0:v]scale=1080:-1:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
             }
         }
 
@@ -54,7 +54,7 @@ function Get-ModeSelection {
 
                 Ratio = "1x1"
 
-                Filter = "scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080"
+                Filter = 'scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080'
             }
         }
 
@@ -68,7 +68,7 @@ function Get-ModeSelection {
 
                 Ratio = "4x3"
 
-                Filter = "scale=1440:1080:force_original_aspect_ratio=increase,crop=1440:1080"
+                Filter = 'scale=1440:1080:force_original_aspect_ratio=increase,crop=1440:1080'
             }
         }
 
@@ -82,7 +82,7 @@ function Get-ModeSelection {
 
                 Ratio = "1x1_Blur_9x16"
 
-                Filter = "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2"
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
             }
         }
 
@@ -96,7 +96,7 @@ function Get-ModeSelection {
 
                 Ratio = "4x3_Blur_9x16"
 
-                Filter = "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:810:force_original_aspect_ratio=increase,crop=1080:810[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2"
+                Filter = '[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:10[bg];[0:v]scale=1080:810:force_original_aspect_ratio=increase,crop=1080:810[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2'
             }
         }
 
@@ -110,7 +110,7 @@ function Get-ModeSelection {
 
                 Ratio = "LargeTopCrop_SmallBottom"
 
-                Filter = "[0:v]split=2[top][bottom];[top]crop=iw:ih*0.65:0:0,scale=1080:1450[topv];[bottom]scale=1080:470:force_original_aspect_ratio=increase,crop=1080:470[bottomv];[topv][bottomv]vstack=inputs=2"
+                Filter = '[0:v]split=2[top][bottom];[top]crop=in_w:in_h*0.65:0:0,scale=1080:1450[topv];[bottom]scale=1080:470:force_original_aspect_ratio=increase,crop=1080:470[bottomv];[topv][bottomv]vstack=inputs=2'
             }
         }
 
