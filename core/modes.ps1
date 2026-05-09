@@ -76,7 +76,7 @@ function Get-ModeSelection {
             }
         }
 
-        "7" {
+       "7" {
 
             return @{
 
