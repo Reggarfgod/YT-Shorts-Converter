@@ -29,12 +29,12 @@ function Start-Conversion {
         Write-Host "End Time   : $EndTime"
         Write-Host ""
 
-      ffmpeg -y `
+ffmpeg -y `
 -ss $StartTime `
 -to $EndTime `
 -i "$inputFile" `
 -filter_complex $Filter `
--map "[v]" `
+-map "[outv]" `
 -r 60 `
 -s 1080x1920 `
 -c:v libx264 `
