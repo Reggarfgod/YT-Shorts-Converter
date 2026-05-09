@@ -1,4 +1,3 @@
-
 # =========================================================
 # VIDEO TRIM FUNCTION
 # core/trim.ps1
@@ -15,6 +14,8 @@ function Get-TrimSettings {
     Write-Host "Start = 00:01:20"
     Write-Host "End   = 00:02:20"
     Write-Host ""
+    Write-Host "Leave END TIME empty for automatic 60 seconds"
+    Write-Host ""
     Write-Host "Maximum Allowed = 60 Seconds"
     Write-Host ""
 
@@ -24,15 +25,53 @@ function Get-TrimSettings {
 
     $startTime = Read-Host "Enter Start Time (HH:MM:SS)"
 
-    $endTime = Read-Host "Enter End Time (HH:MM:SS)"
+    $endTime = Read-Host "Enter End Time (Optional)"
 
     # =====================================================
-    # VALIDATE FORMAT
+    # VALIDATE START
     # =====================================================
 
     try {
 
         $start = [TimeSpan]::Parse($startTime)
+    }
+    catch {
+
+        Write-Host ""
+        Write-Host "================================================="
+        Write-Host "INVALID START TIME FORMAT!"
+        Write-Host "Use HH:MM:SS"
+        Write-Host "================================================="
+        Write-Host ""
+
+        return $null
+    }
+
+    # =====================================================
+    # AUTO 60 SECONDS
+    # =====================================================
+
+    if ([string]::IsNullOrWhiteSpace($endTime)) {
+
+        $end = $start.Add(
+            [TimeSpan]::FromSeconds(60)
+        )
+
+        $endTime = $end.ToString("hh\:mm\:ss")
+
+        Write-Host ""
+        Write-Host "================================================="
+        Write-Host "AUTO END TIME GENERATED"
+        Write-Host "================================================="
+        Write-Host "End Time = $endTime"
+        Write-Host ""
+    }
+
+    # =====================================================
+    # VALIDATE END
+    # =====================================================
+
+    try {
 
         $end = [TimeSpan]::Parse($endTime)
     }
@@ -40,7 +79,7 @@ function Get-TrimSettings {
 
         Write-Host ""
         Write-Host "================================================="
-        Write-Host "INVALID TIME FORMAT!"
+        Write-Host "INVALID END TIME FORMAT!"
         Write-Host "Use HH:MM:SS"
         Write-Host "================================================="
         Write-Host ""
@@ -86,7 +125,7 @@ function Get-TrimSettings {
     }
 
     # =====================================================
-    # SHOW INFO
+    # SHOW SETTINGS
     # =====================================================
 
     Write-Host ""
