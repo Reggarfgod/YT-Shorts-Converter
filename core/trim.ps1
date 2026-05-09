@@ -10,22 +10,55 @@ function Get-TrimSettings {
     Write-Host "VIDEO TRIM"
     Write-Host "================================================="
     Write-Host ""
-    Write-Host "Example:"
-    Write-Host "Start = 00:01:20"
-    Write-Host "End   = 00:02:20"
+    Write-Host "Examples:"
+    Write-Host "30"
+    Write-Host "1:20"
+    Write-Host "00:01:20"
     Write-Host ""
     Write-Host "Leave END TIME empty for automatic 60 seconds"
     Write-Host ""
-    Write-Host "Maximum Allowed = 60 Seconds"
-    Write-Host ""
+
+    # =====================================================
+    # TIME FORMAT CONVERTER
+    # =====================================================
+
+    function Convert-ToTimeFormat {
+
+        param($time)
+
+        if ([string]::IsNullOrWhiteSpace($time)) {
+
+            return $null
+        }
+
+        if ($time -match '^\d+$') {
+
+            return "00:00:$($time.PadLeft(2,'0'))"
+        }
+
+        elseif ($time -match '^\d+:\d+$') {
+
+            return "00:$time"
+        }
+
+        return $time
+    }
 
     # =====================================================
     # ASK USER
     # =====================================================
 
-    $startTime = Read-Host "Enter Start Time (HH:MM:SS)"
+    $startTime = Read-Host "Enter Start Time"
 
     $endTime = Read-Host "Enter End Time (Optional)"
+
+    # =====================================================
+    # FORMAT TIME
+    # =====================================================
+
+    $startTime = Convert-ToTimeFormat $startTime
+
+    $endTime = Convert-ToTimeFormat $endTime
 
     # =====================================================
     # VALIDATE START
@@ -38,17 +71,14 @@ function Get-TrimSettings {
     catch {
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "INVALID START TIME FORMAT!"
-        Write-Host "Use HH:MM:SS"
-        Write-Host "================================================="
+        Write-Host "INVALID START TIME!"
         Write-Host ""
 
         return $null
     }
 
     # =====================================================
-    # AUTO 60 SECONDS
+    # AUTO 60 SEC
     # =====================================================
 
     if ([string]::IsNullOrWhiteSpace($endTime)) {
@@ -60,10 +90,8 @@ function Get-TrimSettings {
         $endTime = $end.ToString("hh\:mm\:ss")
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "AUTO END TIME GENERATED"
-        Write-Host "================================================="
-        Write-Host "End Time = $endTime"
+        Write-Host "AUTO END TIME:"
+        Write-Host $endTime
         Write-Host ""
     }
 
@@ -78,65 +106,35 @@ function Get-TrimSettings {
     catch {
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "INVALID END TIME FORMAT!"
-        Write-Host "Use HH:MM:SS"
-        Write-Host "================================================="
+        Write-Host "INVALID END TIME!"
         Write-Host ""
 
         return $null
     }
 
     # =====================================================
-    # CALCULATE DURATION
+    # CHECK DURATION
     # =====================================================
 
     $duration = $end - $start
 
-    # =====================================================
-    # INVALID DURATION
-    # =====================================================
-
     if ($duration.TotalSeconds -le 0) {
 
         Write-Host ""
-        Write-Host "================================================="
         Write-Host "END TIME MUST BE GREATER!"
-        Write-Host "================================================="
         Write-Host ""
 
         return $null
     }
-
-    # =====================================================
-    # LIMIT TO 60 SECONDS
-    # =====================================================
 
     if ($duration.TotalSeconds -gt 60) {
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "VIDEO TOO LONG!"
-        Write-Host "Maximum allowed = 60 seconds"
-        Write-Host "================================================="
+        Write-Host "MAXIMUM 60 SECONDS ALLOWED!"
         Write-Host ""
 
         return $null
     }
-
-    # =====================================================
-    # SHOW SETTINGS
-    # =====================================================
-
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "TRIM SETTINGS"
-    Write-Host "================================================="
-    Write-Host "Start Time : $startTime"
-    Write-Host "End Time   : $endTime"
-    Write-Host "Duration   : $($duration.TotalSeconds) Seconds"
-    Write-Host "================================================="
-    Write-Host ""
 
     # =====================================================
     # RETURN DATA
