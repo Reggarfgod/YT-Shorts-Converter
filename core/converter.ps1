@@ -4,7 +4,9 @@ function Start-Conversion {
 
         $Video,
         $RatioName,
-        $Filter
+        $Filter,
+        $StartTime,
+        $EndTime
     )
 
     $outputFolder = "Converted_Output"
@@ -18,12 +20,19 @@ function Start-Conversion {
     try {
 
         Write-Host ""
-        Write-Host "Converting Video..."
+        Write-Host "================================================="
+        Write-Host "CONVERTING VIDEO..."
+        Write-Host "================================================="
+        Write-Host ""
+
+        Write-Host "Start Time : $StartTime"
+        Write-Host "End Time   : $EndTime"
         Write-Host ""
 
         ffmpeg -y `
+        -ss $StartTime `
+        -to $EndTime `
         -i "$inputFile" `
-        -t 60 `
         -filter_complex "$Filter" `
         -r 60 `
         -c:v libx264 `
@@ -42,6 +51,8 @@ function Start-Conversion {
         Write-Host "Saved To:"
         Write-Host "$outputFile"
         Write-Host ""
+
+        return $outputFile
     }
     catch {
 
