@@ -104,15 +104,15 @@ function Get-ModeSelection {
         # LARGE TOP CROP + SMALL FULL VIDEO
         # =====================================================
 
-        "7" {
+"7" {
 
-            return @{
+    return @{
 
-                Ratio = "LargeTopCrop_SmallBottom"
+        Ratio = "9x16_TopCrop"
 
-                Filter = '[0:v]split=2[top][bottom];[top]crop=in_w:in_h*0.65:0:0,scale=1080:1450[topv];[bottom]scale=1080:470:force_original_aspect_ratio=increase,crop=1080:470[bottomv];[topv][bottomv]vstack=inputs=2'
-            }
-        }
+        Filter = '[0:v]split=2[top][bottom];[top]crop=in_w:in_h*0.72:0:0,scale=1080:1500[topv];[bottom]scale=1080:420:force_original_aspect_ratio=increase,crop=1080:420[bottomv];[topv][bottomv]vstack=inputs=2,scale=1080:1920'
+    }
+}
 
         # =====================================================
         # INVALID
