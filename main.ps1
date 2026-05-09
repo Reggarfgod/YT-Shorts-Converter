@@ -16,6 +16,7 @@ iex (iwr "$repo/core/ffmpeg.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -35,17 +36,36 @@ do {
         break
     }
 
+    # =====================================================
+    # SELECT MODE
+    # =====================================================
+
     $modeData = Get-ModeSelection
 
     if ($null -eq $modeData) {
         break
     }
 
+    # =====================================================
+    # TRIM SETTINGS
+    # =====================================================
+
+    $trimData = Get-TrimSettings
+
+    if ($null -eq $trimData) {
+        break
+    }
+
+    # =====================================================
+    # START CONVERSION
+    # =====================================================
 
     Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
-        -Filter $modeData.Filter
+        -Filter $modeData.Filter `
+        -StartTime $trimData.Start `
+        -EndTime $trimData.End
 
     Write-Host ""
     Write-Host "================================================="
