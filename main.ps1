@@ -58,6 +58,20 @@ do {
     }
 
     # =====================================================
+    # ASK OVERLAY BEFORE CONVERSION
+    # =====================================================
+
+    Write-Host ""
+    Write-Host "================================================="
+    Write-Host "ADD LIKE / SUBSCRIBE OVERLAY?"
+    Write-Host "================================================="
+    Write-Host "1. Yes"
+    Write-Host "2. No"
+    Write-Host ""
+
+    $overlayChoice = Read-Host "Enter choice"
+
+    # =====================================================
     # START CONVERSION
     # =====================================================
 
@@ -72,16 +86,6 @@ do {
     # ADD OVERLAY
     # =====================================================
 
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "ADD LIKE / SUBSCRIBE OVERLAY?"
-    Write-Host "================================================="
-    Write-Host "1. Yes"
-    Write-Host "2. No"
-    Write-Host ""
-
-    $overlayChoice = Read-Host "Enter choice"
-
     if ($overlayChoice -eq "1") {
 
         $finalOutput = $convertedFile.Replace(
@@ -90,14 +94,24 @@ do {
         )
 
         Add-LikeSubscribeOverlay `
-        -InputVideo $convertedFile `
-        -OutputVideo $finalOutput
+            -InputVideo $convertedFile `
+            -OutputVideo $finalOutput
 
-        Write-Host ""
-        Write-Host "FINAL VIDEO:"
-        Write-Host $finalOutput
-        Write-Host ""
+        $convertedFile = $finalOutput
     }
+
+    # =====================================================
+    # FINAL OUTPUT
+    # =====================================================
+
+    Write-Host ""
+    Write-Host "================================================="
+    Write-Host "FINAL OUTPUT"
+    Write-Host "================================================="
+    Write-Host ""
+
+    Write-Host $convertedFile
+    Write-Host ""
 
     # =====================================================
     # FINISHED
