@@ -57,47 +57,15 @@ do {
     }
 
     # =====================================================
-    # ASK TEXT OVERLAY
-    # =====================================================
-
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "ADD LIKE / SHARE / SUBSCRIBE TEXT?"
-    Write-Host "================================================="
-    Write-Host "1. Yes"
-    Write-Host "2. No"
-    Write-Host ""
-
-    $textOverlay = Read-Host "Enter choice"
-
-    # =====================================================
     # START CONVERSION
     # =====================================================
 
-    $convertedFile = Start-Conversion `
+    Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
         -Filter $modeData.Filter `
         -StartTime $trimData.Start `
-        -EndTime $trimData.End `
-        -AddOverlay $textOverlay
-
-    # =====================================================
-    # FINAL OUTPUT
-    # =====================================================
-
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "FINAL OUTPUT"
-    Write-Host "================================================="
-    Write-Host ""
-
-    Write-Host $convertedFile
-    Write-Host ""
-
-    # =====================================================
-    # FINISHED
-    # =====================================================
+        -EndTime $trimData.End
 
     Write-Host ""
     Write-Host "================================================="
