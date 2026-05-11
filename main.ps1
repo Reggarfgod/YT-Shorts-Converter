@@ -80,25 +80,8 @@ do {
         -RatioName $modeData.Ratio `
         -Filter $modeData.Filter `
         -StartTime $trimData.Start `
-        -EndTime $trimData.End
-
-    # =====================================================
-    # ADD OVERLAY
-    # =====================================================
-
-    if ($overlayChoice -eq "1") {
-
-        $finalOutput = $convertedFile.Replace(
-            ".mp4",
-            "_Overlay.mp4"
-        )
-
-        Add-LikeSubscribeOverlay `
-            -InputVideo $convertedFile `
-            -OutputVideo $finalOutput
-
-        $convertedFile = $finalOutput
-    }
+        -EndTime $trimData.End `
+        -AddOverlay $overlayChoice
 
     # =====================================================
     # FINAL OUTPUT
