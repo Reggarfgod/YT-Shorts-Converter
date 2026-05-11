@@ -17,7 +17,6 @@ iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/overlay.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -58,18 +57,18 @@ do {
     }
 
     # =====================================================
-    # ASK OVERLAY BEFORE CONVERSION
+    # ASK TEXT OVERLAY
     # =====================================================
 
     Write-Host ""
     Write-Host "================================================="
-    Write-Host "ADD LIKE / SUBSCRIBE OVERLAY?"
+    Write-Host "ADD LIKE / SHARE / SUBSCRIBE TEXT?"
     Write-Host "================================================="
     Write-Host "1. Yes"
     Write-Host "2. No"
     Write-Host ""
 
-    $overlayChoice = Read-Host "Enter choice"
+    $textOverlay = Read-Host "Enter choice"
 
     # =====================================================
     # START CONVERSION
@@ -81,7 +80,7 @@ do {
         -Filter $modeData.Filter `
         -StartTime $trimData.Start `
         -EndTime $trimData.End `
-        -AddOverlay $overlayChoice
+        -AddOverlay $textOverlay
 
     # =====================================================
     # FINAL OUTPUT
