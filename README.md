@@ -95,7 +95,8 @@ Converted_Output/
 
 # Screenshots
 
-img/4CF96DE3-8521-4DB6-B688-963752385B29.png
+https://github.com/Reggarfgod/YT-Shorts-Converter/blob/main/img/4CF96DE3-8521-4DB6-B688-963752385B29.png
+https://github.com/Reggarfgod/YT-Shorts-Converter/blob/main/img/5202BE00-3D78-4BDA-A7E6-820CD126B84D.png
 
 ---
 
