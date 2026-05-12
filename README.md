@@ -21,15 +21,22 @@ Supports:
 <img width="1914" height="926" alt="{679A6EDD-4CD5-49D4-97E3-14302933B1D4}" src="https://github.com/user-attachments/assets/2cf838df-168b-453d-85ea-e70997ee99ad" />
 
 ✅ 9:16 Blur Background
-
+<img width="579" height="941" alt="{5628591E-BB8A-4C4A-B313-4DE4D7F40239}" src="https://github.com/user-attachments/assets/7c27249e-90e7-4b9d-9d0c-f6bbd5b1ba7d" />
 
 ✅ 1:1 Center Crop
+<img width="1920" height="938" alt="{8648B77C-7C00-4556-9B3D-8ADE7961EE62}" src="https://github.com/user-attachments/assets/065f8b60-2b90-4d8b-a308-920924a2506e" />
 
 ✅ 4:3 Center Crop
+<img width="1920" height="935" alt="{E4D4DE73-711E-4005-A376-672C430AE13B}" src="https://github.com/user-attachments/assets/e11f7227-1e8d-4113-856e-fe5f1a13b297" />
 
 ✅ 1:1 Blur In 9:16
+<img width="1919" height="940" alt="{4B6D4D50-DB77-4B0A-9800-8642F7C09154}" src="https://github.com/user-attachments/assets/9c059ba0-31f8-45a2-985f-2027f8bf512b" />
 
 ✅ 4:3 Blur In 9:16
+<img width="1920" height="931" alt="{EA3B2C0C-8DCA-4739-A1A1-01268BCED5CB}" src="https://github.com/user-attachments/assets/ae733d53-79f3-4445-95d2-aadf31945026" />
+
+✅ Top Crop + Bottom Full Video
+<img width="1918" height="935" alt="{3BA61D41-7DF0-4683-B416-3E0869DA8E84}" src="https://github.com/user-attachments/assets/f7ca96c4-473b-4afa-8fb7-4ead8f0dd3be" />
 
 ✅ FFmpeg Auto Support
 
