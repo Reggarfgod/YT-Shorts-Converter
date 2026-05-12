@@ -18,15 +18,25 @@ Supports:
 # Features
 
 ✅ 9:16 Center Crop
+
 ✅ 9:16 Blur Background
+
 ✅ 1:1 Center Crop
+
 ✅ 4:3 Center Crop
+
 ✅ 1:1 Blur In 9:16
+
 ✅ 4:3 Blur In 9:16
+
 ✅ FFmpeg Auto Support
+
 ✅ High Quality H264 Export
+
 ✅ Audio Support
+
 ✅ Fast Rendering
+
 
 ---
 
