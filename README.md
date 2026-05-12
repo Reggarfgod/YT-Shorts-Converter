@@ -21,6 +21,7 @@ Supports:
 <img width="1914" height="926" alt="{679A6EDD-4CD5-49D4-97E3-14302933B1D4}" src="https://github.com/user-attachments/assets/2cf838df-168b-453d-85ea-e70997ee99ad" />
 
 ✅ 9:16 Blur Background
+
 <img width="579" height="941" alt="{5628591E-BB8A-4C4A-B313-4DE4D7F40239}" src="https://github.com/user-attachments/assets/7c27249e-90e7-4b9d-9d0c-f6bbd5b1ba7d" />
 
 ✅ 1:1 Center Crop
