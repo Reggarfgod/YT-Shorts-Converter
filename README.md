@@ -18,8 +18,10 @@ Supports:
 # Features
 
 ✅ 9:16 Center Crop
+<img width="1914" height="926" alt="{679A6EDD-4CD5-49D4-97E3-14302933B1D4}" src="https://github.com/user-attachments/assets/2cf838df-168b-453d-85ea-e70997ee99ad" />
 
 ✅ 9:16 Blur Background
+
 
 ✅ 1:1 Center Crop
 
