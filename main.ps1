@@ -159,12 +159,15 @@ do {
             -b:a 192k `
             "$tempClip"
 
-            $fixedPath = `
-            $tempClip.Replace("\", "/")
+            $absolutePath = `
+(Resolve-Path $tempClip).Path
 
-            Add-Content `
-            $concatList `
-            "file '$fixedPath'"
+$fixedPath = `
+$absolutePath.Replace("\", "/")
+
+Add-Content `
+$concatList `
+"file '$fixedPath'"
         }
 
         # =================================================
