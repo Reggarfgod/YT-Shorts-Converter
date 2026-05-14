@@ -30,7 +30,7 @@ function Get-EffectsFilter {
 
         "2" {
 
-            return ",minterpolate=fps=120:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1"
+            return "minterpolate=fps=120:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1"
         }
 
         # =================================================
@@ -49,7 +49,7 @@ function Get-EffectsFilter {
 
             $satValue = Read-Host "Enter saturation value"
 
-            return ",eq=saturation=$satValue"
+            return "eq=saturation=$satValue"
         }
 
         # =================================================
@@ -68,7 +68,7 @@ function Get-EffectsFilter {
 
             $satValue = Read-Host "Enter saturation value"
 
-            return ",minterpolate=fps=120:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,eq=saturation=$satValue"
+            return "minterpolate=fps=120:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,eq=saturation=$satValue"
         }
 
         default {
