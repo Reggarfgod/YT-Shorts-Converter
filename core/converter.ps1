@@ -45,26 +45,26 @@ function Start-Conversion {
         Write-Host "================================================="
         Write-Host ""
 
-        ffmpeg -y `
-        -hwaccel cuda `
-        -ss $StartTime `
-        -to $EndTime `
-        -i "$inputFile" `
-        -filter_complex $Filter `
-        -map "[outv]" `
-        -map 0:a? `
-        -r 60 `
-        -s 1080x1920 `
-        -c:v h264_nvenc `
-        -preset p5 `
-        -cq 20 `
-        -b:v 0 `
-        -pix_fmt yuv420p `
-        -c:a aac `
-        -b:a 192k `
-        -movflags +faststart `
-        -shortest `
-        "$outputFile"
+   ffmpeg -y `
+-hwaccel cuda `
+-ss $StartTime `
+-to $EndTime `
+-i "$inputFile" `
+-filter_complex $Filter `
+-map "[outv]" `
+-map 0:a? `
+-r 60 `
+-s 1080x1920 `
+-c:v h264_nvenc `
+-preset p5 `
+-cq 20 `
+-b:v 0 `
+-pix_fmt yuv420p `
+-c:a aac `
+-b:a 192k `
+-movflags +faststart `
+-shortest `
+"$outputFile"
 
         Write-Host ""
         Write-Host "================================================="
