@@ -17,6 +17,7 @@ iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/effects.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -160,14 +161,14 @@ do {
             "$tempClip"
 
             $absolutePath = `
-(Resolve-Path $tempClip).Path
+            (Resolve-Path $tempClip).Path
 
-$fixedPath = `
-$absolutePath.Replace("\", "/")
+            $fixedPath = `
+            $absolutePath.Replace("\", "/")
 
-Add-Content `
-$concatList `
-"file '$fixedPath'"
+            Add-Content `
+            $concatList `
+            "file '$fixedPath'"
         }
 
         # =================================================
@@ -210,6 +211,12 @@ $concatList `
     }
 
     # =====================================================
+    # EFFECTS
+    # =====================================================
+
+    $effectsFilter = Get-EffectsFilter
+
+    # =====================================================
     # SELECT MODE
     # =====================================================
 
@@ -247,7 +254,7 @@ $concatList `
     Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
-        -Filter $modeData.Filter `
+        -Filter ($modeData.Filter + $effectsFilter) `
         -StartTime $trimData.Start `
         -EndTime $trimData.End
 
