@@ -17,7 +17,6 @@ iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/montage.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -28,72 +27,10 @@ do {
     Show-Banner
 
     # =====================================================
-    # MONTAGE OPTION
+    # SELECT VIDEO
     # =====================================================
 
-    Write-Host ""
-    Write-Host "================================================="
-    Write-Host "CREATE MONTAGE SHORT?"
-    Write-Host "================================================="
-    Write-Host "1. Yes"
-    Write-Host "2. No"
-    Write-Host ""
-
-    $montageChoice = Read-Host "Enter choice"
-
-    # =====================================================
-    # MONTAGE MODE
-    # =====================================================
-
-    if ($montageChoice -eq "1") {
-
-        Write-Host ""
-        Write-Host "================================================="
-        Write-Host "SELECT VIDEOS FOR MONTAGE"
-        Write-Host "================================================="
-        Write-Host ""
-
-        $videos = Get-ChildItem `
-        -Path "." `
-        -Include *.mp4,*.mov,*.mkv `
-        -File
-
-        for ($i = 0; $i -lt $videos.Count; $i++) {
-
-            Write-Host "$($i + 1). $($videos[$i].Name)"
-        }
-
-        Write-Host ""
-        Write-Host "Example: 1,2,3"
-        Write-Host ""
-
-        $selection = Read-Host "Enter video numbers"
-
-        $indexes = $selection.Split(",")
-
-        $selectedVideos = @()
-
-        foreach ($index in $indexes) {
-
-            $selectedVideos += `
-            $videos[[int]$index - 1]
-        }
-
-        $video = Create-MontageVideo `
-        -Videos $selectedVideos
-    }
-    else {
-
-        # =================================================
-        # NORMAL VIDEO SELECT
-        # =================================================
-
-        $video = Get-VideoSelection
-    }
-
-    # =====================================================
-    # INVALID VIDEO
-    # =====================================================
+    $video = Get-VideoSelection
 
     if ($null -eq $video) {
         break
@@ -129,10 +66,6 @@ do {
         -Filter $modeData.Filter `
         -StartTime $trimData.Start `
         -EndTime $trimData.End
-
-    # =====================================================
-    # FINISHED
-    # =====================================================
 
     Write-Host ""
     Write-Host "================================================="
