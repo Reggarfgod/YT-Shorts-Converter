@@ -247,16 +247,34 @@ do {
         }
     }
 
-    # =====================================================
-    # START CONVERSION
-    # =====================================================
+# =====================================================
+# APPLY EFFECTS
+# =====================================================
 
-    Start-Conversion `
-        -Video $video `
-        -RatioName $modeData.Ratio `
-        -Filter ($modeData.Filter + $effectsFilter) `
-        -StartTime $trimData.Start `
-        -EndTime $trimData.End
+if ($effectsFilter -ne "") {
+
+    $finalFilter = `
+    $modeData.Filter.Replace(
+        "[outv]",
+        "," + $effectsFilter + "[outv]"
+    )
+}
+else {
+
+    $finalFilter = `
+    $modeData.Filter
+}
+
+# =====================================================
+# START CONVERSION
+# =====================================================
+
+Start-Conversion `
+    -Video $video `
+    -RatioName $modeData.Ratio `
+    -Filter $finalFilter `
+    -StartTime $trimData.Start `
+    -EndTime $trimData.End
 
     # =====================================================
     # FINISHED
