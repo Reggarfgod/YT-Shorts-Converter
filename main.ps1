@@ -53,10 +53,15 @@ do {
         Write-Host "================================================="
         Write-Host ""
 
-        $allVideos = Get-ChildItem `
-        -Path "." `
-        -Include *.mp4,*.mov,*.mkv `
-        -File
+       $currentFolder = Get-Location
+
+$allVideos = Get-ChildItem `
+-Path $currentFolder `
+-File | Where-Object {
+
+    $_.Extension -match `
+    '\.mp4|\.mov|\.mkv|\.avi'
+}
 
         if ($allVideos.Count -eq 0) {
 
