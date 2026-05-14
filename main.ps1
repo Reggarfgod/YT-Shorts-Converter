@@ -17,7 +17,6 @@ iex (iwr "$repo/core/videos.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/montage.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -53,22 +52,29 @@ do {
         Write-Host "================================================="
         Write-Host ""
 
-       $currentFolder = Get-Location
+        $currentFolder = Get-Location
 
-$allVideos = Get-ChildItem `
--Path $currentFolder `
--File | Where-Object {
+        $allVideos = Get-ChildItem `
+        -Path $currentFolder `
+        -File | Where-Object {
 
-    $_.Extension -match `
-    '\.mp4|\.mov|\.mkv|\.avi'
-}
+            $_.Extension -match `
+            '\.mp4|\.mov|\.mkv|\.avi'
+        }
 
         if ($allVideos.Count -eq 0) {
 
+            Write-Host ""
             Write-Host "NO VIDEOS FOUND!"
+            Write-Host ""
+
             pause
             continue
         }
+
+        # =================================================
+        # SHOW VIDEOS
+        # =================================================
 
         for ($i = 0; $i -lt $allVideos.Count; $i++) {
 
@@ -79,23 +85,26 @@ $allVideos = Get-ChildItem `
         Write-Host "Example: 1,2,3"
         Write-Host ""
 
-        $selection = Read-Host "Select videos for montage"
+        $selection = `
+        Read-Host "Select videos for montage"
 
-        $indexes = $selection.Split(",")
+        $indexes = `
+        $selection.Split(",")
 
         $selectedVideos = @()
 
         foreach ($index in $indexes) {
 
             $selectedVideos += `
-            $allVideos[[int]$index - 1]
+            $allVideos[[int]$index.Trim() - 1]
         }
 
         # =================================================
-        # CREATE TEMP CLIPS
+        # TEMP FOLDERS
         # =================================================
 
-        $tempFolder = "Converted_Output\MontageTemp"
+        $tempFolder = `
+        "Converted_Output\MontageTemp"
 
         if (!(Test-Path $tempFolder)) {
 
@@ -126,8 +135,17 @@ $allVideos = Get-ChildItem `
 
             $trimData = Get-TrimSettings
 
+            if ($null -eq $trimData) {
+
+                break
+            }
+
             $tempClip = `
             "$tempFolder\clip_$i.mp4"
+
+            Write-Host ""
+            Write-Host "CREATING CLIP..."
+            Write-Host ""
 
             ffmpeg -y `
             -ss $trimData.Start `
@@ -158,7 +176,7 @@ $allVideos = Get-ChildItem `
 
         Write-Host ""
         Write-Host "================================================="
-        Write-Host "CREATING MONTAGE..."
+        Write-Host "CREATING FINAL MONTAGE..."
         Write-Host "================================================="
         Write-Host ""
 
@@ -199,7 +217,7 @@ $allVideos = Get-ChildItem `
     }
 
     # =====================================================
-    # TRIM SETTINGS
+    # NORMAL TRIM ONLY
     # =====================================================
 
     if ($montageChoice -ne "1") {
