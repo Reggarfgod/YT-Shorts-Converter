@@ -314,13 +314,7 @@ if ($socialFilter -ne "") {
     )
 
     $finalFilter += `
-    ";" + $socialFilter.Replace(
-        "[outv]",
-        "[outv_final]"
-    )
-
-    $finalFilter += `
-    ";[outv_final]copy[outv]"
+    ";" + $socialFilter
 }
 
     # =====================================================
