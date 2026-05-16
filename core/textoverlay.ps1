@@ -29,6 +29,16 @@ function Get-TextOverlayFilter {
     }
 
     # =====================================================
+    # FIX SPECIAL CHARACTERS
+    # =====================================================
+
+    $overlayText = `
+    $overlayText.Replace(":", "\:")
+
+    $overlayText = `
+    $overlayText.Replace("'", "\'")
+
+    # =====================================================
     # POSITION
     # =====================================================
 
@@ -45,27 +55,15 @@ function Get-TextOverlayFilter {
 
     switch ($positionChoice) {
 
-        # =================================================
-        # TOP
-        # =================================================
-
         "1" {
 
             $yPos = "150"
         }
 
-        # =================================================
-        # CENTER
-        # =================================================
-
         "2" {
 
             $yPos = "(h-text_h)/2"
         }
-
-        # =================================================
-        # BOTTOM
-        # =================================================
 
         "3" {
 
@@ -86,33 +84,12 @@ function Get-TextOverlayFilter {
     "C\:/Windows/Fonts/arialbd.ttf"
 
     # =====================================================
-    # STYLED TEXT
+    # SINGLE LINE FILTER
     # =====================================================
 
-    $textFilter = @"
-
-drawtext=
-fontfile='$fontPath':
-text='$overlayText':
-fontcolor=white:
-fontsize=72:
-line_spacing=10:
-borderw=10:
-bordercolor=black:
-shadowx=5:
-shadowy=5:
-shadowcolor=black@0.9:
-x=(w-text_w)/2:
-y=$yPos
-
-"@
-
-    # REMOVE NEWLINES
-    $textFilter = `
-    $textFilter.Replace("`r","")
-
-    $textFilter = `
-    $textFilter.Replace("`n","")
+    $textFilter = "
+drawtext=fontfile='$fontPath':text='$overlayText':fontcolor=white:fontsize=72:line_spacing=10:borderw=10:bordercolor=black:shadowx=5:shadowy=5:shadowcolor=black@0.9:x=(w-text_w)/2:y=$yPos
+"
 
     return $textFilter
 }
