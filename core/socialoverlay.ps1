@@ -72,13 +72,13 @@ function Get-SocialOverlayFilter {
     -OutFile "$assetFolder/subscribe.png"
 
     # =====================================================
-    # SAFE INTEGER POSITIONS
+    # SAME POSITION FOR ALL PNGS
     # =====================================================
 
- $y1 = [int]$baseY
-$y2 = [int]$baseY
-$y3 = [int]$baseY
-$y4 = [int]$baseY
+    $y1 = [int]$baseY
+    $y2 = [int]$baseY
+    $y3 = [int]$baseY
+    $y4 = [int]$baseY
 
     # =====================================================
     # CENTER X POSITION
@@ -91,15 +91,17 @@ $y4 = [int]$baseY
     # =====================================================
 
     $filter = "
-movie=assets/like.png,scale=650:-1[like];
-movie=assets/comment.png,scale=650:-1[comment];
-movie=assets/share.png,scale=650:-1[share];
-movie=assets/subscribe.png,scale=650:-1[sub];
+movie=assets/like.png,format=rgba,scale=650:-1[like];
+movie=assets/comment.png,format=rgba,scale=650:-1[comment];
+movie=assets/share.png,format=rgba,scale=650:-1[share];
+movie=assets/subscribe.png,format=rgba,scale=650:-1[sub];
 
 [base][like]overlay=${xPos}:$($y1):enable='between(t,0,2)'[v1];
 [v1][comment]overlay=${xPos}:$($y2):enable='between(t,2,4)'[v2];
 [v2][share]overlay=${xPos}:$($y3):enable='between(t,4,6)'[v3];
-[v3][sub]overlay=${xPos}:$($y4):enable='between(t,6,8)'[outv]
+[v3][sub]overlay=${xPos}:$($y4):enable='between(t,6,8)'[tmp];
+
+[tmp]format=yuv420p[outv]
 "
 
     return $filter
