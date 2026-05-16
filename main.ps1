@@ -19,6 +19,7 @@ iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/effects.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/textoverlay.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/socialoverlay.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -224,11 +225,17 @@ do {
 
     $effectsFilter = Get-EffectsFilter
 
-    # =====================================================
-    # TEXT OVERLAY
-    # =====================================================
+ # =====================================================
+# TEXT OVERLAY
+# =====================================================
 
-    $textFilter = Get-TextOverlayFilter
+$textFilter = Get-TextOverlayFilter
+
+# =====================================================
+# SOCIAL OVERLAY
+# =====================================================
+
+$socialFilter = Get-SocialOverlayFilter
 
     # =====================================================
     # SELECT MODE
@@ -261,38 +268,59 @@ do {
         }
     }
 
-    # =====================================================
-    # APPLY EFFECTS
-    # =====================================================
+ # =====================================================
+# APPLY EFFECTS
+# =====================================================
 
-    $combinedEffects = @()
+$combinedEffects = @()
 
-    if ($effectsFilter -ne "") {
+# =====================================================
+# VIDEO EFFECTS
+# =====================================================
 
-        $combinedEffects += $effectsFilter
-    }
+if ($effectsFilter -ne "") {
 
-    if ($textFilter -ne "") {
+    $combinedEffects += $effectsFilter
+}
 
-        $combinedEffects += $textFilter
-    }
+# =====================================================
+# TEXT OVERLAY
+# =====================================================
 
-    if ($combinedEffects.Count -gt 0) {
+if ($textFilter -ne "") {
 
-        $effectString = `
-        ($combinedEffects -join ",")
+    $combinedEffects += $textFilter
+}
 
-        $finalFilter = `
-        $modeData.Filter.Replace(
-            "[outv]",
-            "," + $effectString + "[outv]"
-        )
-    }
-    else {
+# =====================================================
+# SOCIAL OVERLAY
+# =====================================================
 
-        $finalFilter = `
-        $modeData.Filter
-    }
+if ($socialFilter -ne "") {
+
+    $combinedEffects += $socialFilter
+}
+
+# =====================================================
+# FINAL FILTER
+# =====================================================
+
+if ($combinedEffects.Count -gt 0) {
+
+    $effectString = `
+    ($combinedEffects -join ",")
+
+    $finalFilter = `
+    $modeData.Filter.Replace(
+        "[outv]",
+        "," + $effectString + "[outv]"
+    )
+}
+else {
+
+    $finalFilter = `
+    $modeData.Filter
+}
 
     # =====================================================
     # START CONVERSION
