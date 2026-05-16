@@ -32,25 +32,11 @@ function Get-SocialOverlayFilter {
 
     switch ($position) {
 
-        "1" {
+        "1" { $baseY = 120 }
+        "2" { $baseY = 700 }
+        "3" { $baseY = 1200 }
 
-            $baseY = 120
-        }
-
-        "2" {
-
-            $baseY = 700
-        }
-
-        "3" {
-
-            $baseY = 1200
-        }
-
-        default {
-
-            $baseY = 1200
-        }
+        default { $baseY = 1200 }
     }
 
     # =====================================================
@@ -86,32 +72,30 @@ function Get-SocialOverlayFilter {
     -OutFile "$assetFolder/subscribe.png"
 
     # =====================================================
-    # FILTER
+    # FIXED FILTER
     # =====================================================
 
-$filter = @"
+    $y1 = $baseY
+    $y2 = $baseY + 110
+    $y3 = $baseY + 220
+    $y4 = $baseY + 330
+
+    $filter = @"
 
 movie=assets/like.png,scale=650:-1[like];
 movie=assets/comment.png,scale=650:-1[comment];
 movie=assets/share.png,scale=650:-1[share];
 movie=assets/subscribe.png,scale=650:-1[sub];
 
-[base][like]overlay=60:$baseY:enable='between(t,0,1.5)'[v1];
-[v1][comment]overlay=60:$($baseY+110):enable='between(t,1.2,2.7)'[v2];
-[v2][share]overlay=60:$($baseY+220):enable='between(t,2.4,3.9)'[v3];
-[v3][sub]overlay=60:$($baseY+330):enable='between(t,3.6,6)'[outv]
+[base][like]overlay=60:$y1:enable='between(t,0,1.5)'[v1];
+[v1][comment]overlay=60:$y2:enable='between(t,1.2,2.7)'[v2];
+[v2][share]overlay=60:$y3:enable='between(t,2.4,3.9)'[v3];
+[v3][sub]overlay=60:$y4:enable='between(t,3.6,6)'[outv]
 
 "@
 
-    # =====================================================
-    # CLEAN FILTER
-    # =====================================================
-
-    $filter = `
-    $filter.Replace("`r","")
-
-    $filter = `
-    $filter.Replace("`n","")
+    $filter = $filter.Replace("`r","")
+    $filter = $filter.Replace("`n","")
 
     return $filter
 }
