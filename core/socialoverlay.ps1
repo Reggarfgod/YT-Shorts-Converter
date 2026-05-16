@@ -75,10 +75,10 @@ function Get-SocialOverlayFilter {
     # SAFE INTEGER POSITIONS
     # =====================================================
 
-    $y1 = [int]$baseY
-    $y2 = [int]($baseY + 110)
-    $y3 = [int]($baseY + 220)
-    $y4 = [int]($baseY + 330)
+ $y1 = [int]$baseY
+$y2 = [int]$baseY
+$y3 = [int]$baseY
+$y4 = [int]$baseY
 
     # =====================================================
     # CENTER X POSITION
