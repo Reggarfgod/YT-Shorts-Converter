@@ -108,10 +108,10 @@ function Get-SocialOverlayFilter {
     # =====================================================
 
     $filter = "
-movie=assets/like.png,scale=650:-1,format=rgba,fade=t=in:st=0:d=0.3:alpha=1,fade=t=out:st=2.7:d=0.3:alpha=1[like];
-movie=assets/comment.png,scale=650:-1,format=rgba,fade=t=in:st=3:d=0.3:alpha=1,fade=t=out:st=5.7:d=0.3:alpha=1[comment];
-movie=assets/share.png,scale=650:-1,format=rgba,fade=t=in:st=6:d=0.3:alpha=1,fade=t=out:st=8.7:d=0.3:alpha=1[share];
-movie=assets/subscribe.png,scale=650:-1,format=rgba,fade=t=in:st=9:d=0.3:alpha=1,fade=t=out:st=11.7:d=0.3:alpha=1[sub];
+movie=assets/like.png,scale=650:-1,format=rgba,fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st=2.65:d=0.35:alpha=1[like];
+movie=assets/comment.png,scale=650:-1,format=rgba,fade=t=in:st=3:d=0.35:alpha=1,fade=t=out:st=5.65:d=0.35:alpha=1[comment];
+movie=assets/share.png,scale=650:-1,format=rgba,fade=t=in:st=6:d=0.35:alpha=1,fade=t=out:st=8.65:d=0.35:alpha=1[share];
+movie=assets/subscribe.png,scale=650:-1,format=rgba,fade=t=in:st=9:d=0.35:alpha=1,fade=t=out:st=11.65:d=0.35:alpha=1[sub];
 
 [base][like]overlay=$xPos:$yPos:enable='between(t,0,3)'[v1];
 [v1][comment]overlay=$xPos:$yPos:enable='between(t,3,6)'[v2];
