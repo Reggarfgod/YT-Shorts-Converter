@@ -30,14 +30,19 @@ function Get-SocialOverlayFilter {
 
     $position = Read-Host "Enter choice"
 
-    switch ($position) {
+  switch ($position) {
 
-        "1" { $baseY = 120 }
-        "2" { $baseY = 700 }
-        "3" { $baseY = 1400 }
+    # TOP
+    "1" { $baseY = 180 }
 
-        default { $baseY = 1400 }
-    }
+    # CENTER
+    "2" { $baseY = 860 }
+
+    # BOTTOM
+    "3" { $baseY = 1550 }
+
+    default { $baseY = 1550 }
+}
 
     # =====================================================
     # DOWNLOAD PNGS
