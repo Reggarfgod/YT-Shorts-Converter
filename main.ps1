@@ -18,6 +18,7 @@ iex (iwr "$repo/core/modes.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/effects.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/textoverlay.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -152,9 +153,10 @@ do {
             -ss $trimData.Start `
             -to $trimData.End `
             -i "$($clip.FullName)" `
-            -c:v libx264 `
-            -preset fast `
-            -crf 20 `
+            -c:v h264_nvenc `
+            -preset p5 `
+            -cq 20 `
+            -b:v 0 `
             -pix_fmt yuv420p `
             -c:a aac `
             -b:a 192k `
@@ -172,7 +174,7 @@ do {
         }
 
         # =================================================
-        # CREATE MONTAGE
+        # CREATE FINAL MONTAGE
         # =================================================
 
         $montageOutput = `
@@ -188,7 +190,13 @@ do {
         -f concat `
         -safe 0 `
         -i "$concatList" `
-        -c copy `
+        -c:v h264_nvenc `
+        -preset p5 `
+        -cq 20 `
+        -b:v 0 `
+        -pix_fmt yuv420p `
+        -c:a aac `
+        -b:a 192k `
         "$montageOutput"
 
         $video = Get-Item $montageOutput
@@ -215,6 +223,12 @@ do {
     # =====================================================
 
     $effectsFilter = Get-EffectsFilter
+
+    # =====================================================
+    # TEXT OVERLAY
+    # =====================================================
+
+    $textFilter = Get-TextOverlayFilter
 
     # =====================================================
     # SELECT MODE
@@ -247,34 +261,49 @@ do {
         }
     }
 
-# =====================================================
-# APPLY EFFECTS
-# =====================================================
+    # =====================================================
+    # APPLY EFFECTS
+    # =====================================================
 
-if ($effectsFilter -ne "") {
+    $combinedEffects = @()
 
-    $finalFilter = `
-    $modeData.Filter.Replace(
-        "[outv]",
-        "," + $effectsFilter + "[outv]"
-    )
-}
-else {
+    if ($effectsFilter -ne "") {
 
-    $finalFilter = `
-    $modeData.Filter
-}
+        $combinedEffects += $effectsFilter
+    }
 
-# =====================================================
-# START CONVERSION
-# =====================================================
+    if ($textFilter -ne "") {
 
-Start-Conversion `
-    -Video $video `
-    -RatioName $modeData.Ratio `
-    -Filter $finalFilter `
-    -StartTime $trimData.Start `
-    -EndTime $trimData.End
+        $combinedEffects += $textFilter
+    }
+
+    if ($combinedEffects.Count -gt 0) {
+
+        $effectString = `
+        ($combinedEffects -join ",")
+
+        $finalFilter = `
+        $modeData.Filter.Replace(
+            "[outv]",
+            "," + $effectString + "[outv]"
+        )
+    }
+    else {
+
+        $finalFilter = `
+        $modeData.Filter
+    }
+
+    # =====================================================
+    # START CONVERSION
+    # =====================================================
+
+    Start-Conversion `
+        -Video $video `
+        -RatioName $modeData.Ratio `
+        -Filter $finalFilter `
+        -StartTime $trimData.Start `
+        -EndTime $trimData.End
 
     # =====================================================
     # FINISHED
