@@ -305,14 +305,23 @@ do {
     # SOCIAL PNG OVERLAY
     # =====================================================
 
-    if ($socialFilter -ne "") {
+if ($socialFilter -ne "") {
 
-        $finalFilter = `
-        $finalFilter.Replace(
-            "[outv]",
-            ";" + $socialFilter
-        )
-    }
+    $finalFilter = `
+    $finalFilter.Replace(
+        "[outv]",
+        "[base]"
+    )
+
+    $finalFilter += `
+    ";" + $socialFilter.Replace(
+        "[outv]",
+        "[outv_final]"
+    )
+
+    $finalFilter += `
+    ";[outv_final]copy[outv]"
+}
 
     # =====================================================
     # START CONVERSION
