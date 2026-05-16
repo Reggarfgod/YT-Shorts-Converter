@@ -34,9 +34,9 @@ function Get-SocialOverlayFilter {
 
         "1" { $baseY = 120 }
         "2" { $baseY = 700 }
-        "3" { $baseY = 1200 }
+        "3" { $baseY = 1400 }
 
-        default { $baseY = 1200 }
+        default { $baseY = 1400 }
     }
 
     # =====================================================
