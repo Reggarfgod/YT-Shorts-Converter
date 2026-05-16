@@ -91,17 +91,21 @@ function Get-SocialOverlayFilter {
 
 $filter = @"
 
-movie=assets/like.png[like];
-movie=assets/comment.png[comment];
-movie=assets/share.png[share];
-movie=assets/subscribe.png[sub];
+movie=assets/like.png,scale=650:-1[like];
+movie=assets/comment.png,scale=650:-1[comment];
+movie=assets/share.png,scale=650:-1[share];
+movie=assets/subscribe.png,scale=650:-1[sub];
 
-[base][like]overlay=x=60:y=$baseY:enable='between(t,0,1.5)'[v1];
-[v1][comment]overlay=x=60:y=$($baseY+110):enable='between(t,1.2,2.7)'[v2];
-[v2][share]overlay=x=60:y=$($baseY+220):enable='between(t,2.4,3.9)'[v3];
-[v3][sub]overlay=x=60:y=$($baseY+330):enable='between(t,3.6,6)'[outv]
+[base][like]overlay=60:$baseY:enable='between(t,0,1.5)'[v1];
+[v1][comment]overlay=60:$($baseY+110):enable='between(t,1.2,2.7)'[v2];
+[v2][share]overlay=60:$($baseY+220):enable='between(t,2.4,3.9)'[v3];
+[v3][sub]overlay=60:$($baseY+330):enable='between(t,3.6,6)'[outv]
 
 "@
+
+    # =====================================================
+    # CLEAN FILTER
+    # =====================================================
 
     $filter = `
     $filter.Replace("`r","")
