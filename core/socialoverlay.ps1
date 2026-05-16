@@ -113,10 +113,10 @@ movie=assets/comment.png,scale=650:-1,format=rgba,fade=t=in:st=3:d=0.35:alpha=1,
 movie=assets/share.png,scale=650:-1,format=rgba,fade=t=in:st=6:d=0.35:alpha=1,fade=t=out:st=8.65:d=0.35:alpha=1[share];
 movie=assets/subscribe.png,scale=650:-1,format=rgba,fade=t=in:st=9:d=0.35:alpha=1,fade=t=out:st=11.65:d=0.35:alpha=1[sub];
 
-[base][like]overlay=$xPos:$yPos:enable='between(t,0,3)'[v1];
-[v1][comment]overlay=$xPos:$yPos:enable='between(t,3,6)'[v2];
-[v2][share]overlay=$xPos:$yPos:enable='between(t,6,9)'[v3];
-[v3][sub]overlay=$xPos:$yPos:enable='between(t,9,12)'[outv]
+[base][like]overlay=${xPos}:${yPos}:enable='between(t,0,3)'[v1];
+[v1][comment]overlay=${xPos}:${yPos}:enable='between(t,3,6)'[v2];
+[v2][share]overlay=${xPos}:${yPos}:enable='between(t,6,9)'[v3];
+[v3][sub]overlay=${xPos}:${yPos}:enable='between(t,9,12)'[outv]
 "
 
     return $filter
