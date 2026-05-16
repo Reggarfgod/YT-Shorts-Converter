@@ -19,7 +19,6 @@ iex (iwr "$repo/core/converter.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/effects.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/textoverlay.ps1" -UseBasicParsing).Content
-iex (iwr "$repo/core/socialoverlay.ps1" -UseBasicParsing).Content
 
 # =========================================================
 # MAIN LOOP
@@ -232,12 +231,6 @@ do {
     $textFilter = Get-TextOverlayFilter
 
     # =====================================================
-    # SOCIAL OVERLAY
-    # =====================================================
-
-    $socialFilter = Get-SocialOverlayFilter
-
-    # =====================================================
     # SELECT MODE
     # =====================================================
 
@@ -282,11 +275,6 @@ do {
     if ($textFilter -ne "") {
 
         $combinedEffects += $textFilter
-    }
-
-    if ($socialFilter -ne "") {
-
-        $combinedEffects += $socialFilter
     }
 
     if ($combinedEffects.Count -gt 0) {
