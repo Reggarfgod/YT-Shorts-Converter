@@ -316,35 +316,16 @@ if ($socialFilter -ne "") {
     $finalFilter += `
     ";" + $socialFilter
 }
- # =====================================================
-# LIVE FINAL SHORT PREVIEW
-# =====================================================
+    # =====================================================
+    # START CONVERSION
+    # =====================================================
 
-Write-Host ""
-Write-Host "================================================="
-Write-Host "OPENING LIVE SHORT PREVIEW..."
-Write-Host "================================================="
-Write-Host ""
-
-Start-Process powershell `
--ArgumentList @(
-"-NoExit",
-"-Command",
-"
-ffplay -window_title 'FINAL SHORT PREVIEW' -ss $($trimData.Start) -to $($trimData.End) -i `"$($video.FullName)`" -filter_complex `"$finalFilter`"
-"
-)
-
-# =====================================================
-# START CONVERSION
-# =====================================================
-
-Start-Conversion `
-    -Video $video `
-    -RatioName $modeData.Ratio `
-    -Filter $finalFilter `
-    -StartTime $trimData.Start `
-    -EndTime $trimData.End
+    Start-Conversion `
+        -Video $video `
+        -RatioName $modeData.Ratio `
+        -Filter $finalFilter `
+        -StartTime $trimData.Start `
+        -EndTime $trimData.End
 
     # =====================================================
     # FINISHED
