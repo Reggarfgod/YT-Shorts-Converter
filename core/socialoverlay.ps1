@@ -32,11 +32,37 @@ function Get-SocialOverlayFilter {
 
     switch ($position) {
 
-        "1" { $baseY = 120 }
-        "2" { $baseY = 700 }
-        "3" { $baseY = 1200 }
+        # =================================================
+        # TOP
+        # =================================================
 
-        default { $baseY = 1200 }
+        "1" {
+
+            $yPos = 120
+        }
+
+        # =================================================
+        # CENTER
+        # =================================================
+
+        "2" {
+
+            $yPos = 810
+        }
+
+        # =================================================
+        # BOTTOM
+        # =================================================
+
+        "3" {
+
+            $yPos = 1500
+        }
+
+        default {
+
+            $yPos = 810
+        }
     }
 
     # =====================================================
@@ -72,27 +98,25 @@ function Get-SocialOverlayFilter {
     -OutFile "$assetFolder/subscribe.png"
 
     # =====================================================
-    # SAFE INTEGER POSITIONS
+    # CENTER HORIZONTAL
     # =====================================================
 
-    $y1 = [int]$baseY
-    $y2 = [int]($baseY + 110)
-    $y3 = [int]($baseY + 220)
-    $y4 = [int]($baseY + 330)
+    $xPos = "(W-w)/2"
 
     # =====================================================
-    # SINGLE LINE FILTER
+    # FILTER
     # =====================================================
 
     $filter = "
-movie=assets/like.png,scale=650:-1[like];
-movie=assets/comment.png,scale=650:-1[comment];
-movie=assets/share.png,scale=650:-1[share];
-movie=assets/subscribe.png,scale=650:-1[sub];
-[base][like]overlay=60:$($y1):enable='between(t,0,1.5)'[v1];
-[v1][comment]overlay=60:$($y2):enable='between(t,1.2,2.7)'[v2];
-[v2][share]overlay=60:$($y3):enable='between(t,2.4,3.9)'[v3];
-[v3][sub]overlay=60:$($y4):enable='between(t,3.6,6)'[outv]
+movie=assets/like.png,scale=650:-1,format=rgba,fade=t=in:st=0:d=0.3:alpha=1,fade=t=out:st=2.7:d=0.3:alpha=1[like];
+movie=assets/comment.png,scale=650:-1,format=rgba,fade=t=in:st=3:d=0.3:alpha=1,fade=t=out:st=5.7:d=0.3:alpha=1[comment];
+movie=assets/share.png,scale=650:-1,format=rgba,fade=t=in:st=6:d=0.3:alpha=1,fade=t=out:st=8.7:d=0.3:alpha=1[share];
+movie=assets/subscribe.png,scale=650:-1,format=rgba,fade=t=in:st=9:d=0.3:alpha=1,fade=t=out:st=11.7:d=0.3:alpha=1[sub];
+
+[base][like]overlay=$xPos:$yPos:enable='between(t,0,3)'[v1];
+[v1][comment]overlay=$xPos:$yPos:enable='between(t,3,6)'[v2];
+[v2][share]overlay=$xPos:$yPos:enable='between(t,6,9)'[v3];
+[v3][sub]overlay=$xPos:$yPos:enable='between(t,9,12)'[outv]
 "
 
     return $filter
