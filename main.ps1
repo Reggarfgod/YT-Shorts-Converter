@@ -225,17 +225,17 @@ do {
 
     $effectsFilter = Get-EffectsFilter
 
- # =====================================================
-# TEXT OVERLAY
-# =====================================================
+    # =====================================================
+    # TEXT OVERLAY
+    # =====================================================
 
-$textFilter = Get-TextOverlayFilter
+    $textFilter = Get-TextOverlayFilter
 
-# =====================================================
-# SOCIAL OVERLAY
-# =====================================================
+    # =====================================================
+    # SOCIAL OVERLAY
+    # =====================================================
 
-$socialFilter = Get-SocialOverlayFilter
+    $socialFilter = Get-SocialOverlayFilter
 
     # =====================================================
     # SELECT MODE
@@ -268,59 +268,43 @@ $socialFilter = Get-SocialOverlayFilter
         }
     }
 
- # =====================================================
-# APPLY EFFECTS
-# =====================================================
+    # =====================================================
+    # APPLY EFFECTS
+    # =====================================================
 
-$combinedEffects = @()
+    $combinedEffects = @()
 
-# =====================================================
-# VIDEO EFFECTS
-# =====================================================
+    if ($effectsFilter -ne "") {
 
-if ($effectsFilter -ne "") {
+        $combinedEffects += $effectsFilter
+    }
 
-    $combinedEffects += $effectsFilter
-}
+    if ($textFilter -ne "") {
 
-# =====================================================
-# TEXT OVERLAY
-# =====================================================
+        $combinedEffects += $textFilter
+    }
 
-if ($textFilter -ne "") {
+    if ($socialFilter -ne "") {
 
-    $combinedEffects += $textFilter
-}
+        $combinedEffects += $socialFilter
+    }
 
-# =====================================================
-# SOCIAL OVERLAY
-# =====================================================
+    if ($combinedEffects.Count -gt 0) {
 
-if ($socialFilter -ne "") {
+        $effectString = `
+        ($combinedEffects -join ",")
 
-    $combinedEffects += $socialFilter
-}
+        $finalFilter = `
+        $modeData.Filter.Replace(
+            "[outv]",
+            "," + $effectString + "[outv]"
+        )
+    }
+    else {
 
-# =====================================================
-# FINAL FILTER
-# =====================================================
-
-if ($combinedEffects.Count -gt 0) {
-
-    $effectString = `
-    ($combinedEffects -join ",")
-
-    $finalFilter = `
-    $modeData.Filter.Replace(
-        "[outv]",
-        "," + $effectString + "[outv]"
-    )
-}
-else {
-
-    $finalFilter = `
-    $modeData.Filter
-}
+        $finalFilter = `
+        $modeData.Filter
+    }
 
     # =====================================================
     # START CONVERSION
