@@ -101,22 +101,31 @@ function Get-SocialOverlayFilter {
     # CENTER HORIZONTAL
     # =====================================================
 
-    $xPos = "(W-w)/2"
+$xPos = "(W-w)/2"
 
-    # =====================================================
-    # FILTER
-    # =====================================================
+# =====================================================
+# TIMINGS
+# =====================================================
 
-    $filter = "
+$likeStart = 0
+$commentStart = 3
+$shareStart = 6
+$subscribeStart = 9
+
+# =====================================================
+# FILTER
+# =====================================================
+
+$filter = "
 movie=assets/like.png,scale=650:-1,format=rgba,fade=t=in:st=0:d=0.35:alpha=1,fade=t=out:st=2.65:d=0.35:alpha=1[like];
 movie=assets/comment.png,scale=650:-1,format=rgba,fade=t=in:st=3:d=0.35:alpha=1,fade=t=out:st=5.65:d=0.35:alpha=1[comment];
 movie=assets/share.png,scale=650:-1,format=rgba,fade=t=in:st=6:d=0.35:alpha=1,fade=t=out:st=8.65:d=0.35:alpha=1[share];
 movie=assets/subscribe.png,scale=650:-1,format=rgba,fade=t=in:st=9:d=0.35:alpha=1,fade=t=out:st=11.65:d=0.35:alpha=1[sub];
 
-[base][like]overlay=${xPos}:${yPos}:enable='between(t,0,3)'[v1];
-[v1][comment]overlay=${xPos}:${yPos}:enable='between(t,3,6)'[v2];
-[v2][share]overlay=${xPos}:${yPos}:enable='between(t,6,9)'[v3];
-[v3][sub]overlay=${xPos}:${yPos}:enable='between(t,9,12)'[outv]
+[base][like]overlay=(W-w)/2:$($yPos):enable='between(t,$likeStart,3)'[v1];
+[v1][comment]overlay=(W-w)/2:$($yPos):enable='between(t,$commentStart,6)'[v2];
+[v2][share]overlay=(W-w)/2:$($yPos):enable='between(t,$shareStart,9)'[v3];
+[v3][sub]overlay=(W-w)/2:$($yPos):enable='between(t,$subscribeStart,12)'[outv]
 "
 
     return $filter
