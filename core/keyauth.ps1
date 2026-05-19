@@ -4,7 +4,8 @@ function Confirm-License {
     # DISCORD INVITE
     # =====================================================
 
-    $discordInvite = "https://discord.gg/CN962KMpJk"
+    $discordInvite = `
+    "https://discord.gg/CN962KMpJk"
 
     Write-Host ""
     Write-Host "================================================="
@@ -34,7 +35,8 @@ function Confirm-License {
     # ASK KEY
     # =====================================================
 
-    $userKey = Read-Host "Enter Access Key"
+    $userKey = `
+    Read-Host "Enter Access Key"
 
     if ([string]::IsNullOrWhiteSpace($userKey)) {
 
@@ -49,25 +51,11 @@ function Confirm-License {
     }
 
     # =====================================================
-    # ENCODED VERIFY URL
+    # VERIFY API URL
     # =====================================================
 
-    $encoded = "aHR0cDovLzQ1LjE0MS4zNi43NDoyMDA2L3ZlcmlmeQ=="
-
-    $bytes = [System.Convert]::FromBase64String($encoded)
-
-    $baseUrl = [System.Text.Encoding]::UTF8.GetString($bytes)
-
-    $verifyUrl = "$baseUrl?key=$userKey"
-
-    # =====================================================
-    # DEBUG URL
-    # =====================================================
-
-    Write-Host ""
-    Write-Host "DEBUG URL:"
-    Write-Host $verifyUrl
-    Write-Host ""
+    $verifyUrl = `
+    "http://45.141.36.74:2006/verify?key=$userKey"
 
     try {
 
@@ -75,17 +63,21 @@ function Confirm-License {
         # VERIFY KEY
         # =================================================
 
-        $response = Invoke-WebRequest `
-            -Uri $verifyUrl `
-            -UseBasicParsing
+        $response = `
+        Invoke-WebRequest `
+        -Uri $verifyUrl `
+        -UseBasicParsing
 
-        $result = $response.Content.Trim()
+        $result = `
+        $response.Content.Trim()
 
         # =================================================
         # VALID KEY
         # =================================================
 
-        if ($result -eq "VALID_KEY") {
+        if (
+            $result -eq "VALID_KEY"
+        ) {
 
             Write-Host ""
             Write-Host "================================================="
@@ -109,7 +101,6 @@ function Confirm-License {
         pause
         exit
     }
-
     catch {
 
         Write-Host ""
@@ -124,10 +115,6 @@ function Confirm-License {
         Write-Host "2. Express API added"
         Write-Host "3. Port 2006 open"
         Write-Host "4. Correct server IP"
-        Write-Host ""
-
-        Write-Host "ERROR:"
-        Write-Host $_.Exception.Message
         Write-Host ""
 
         pause
