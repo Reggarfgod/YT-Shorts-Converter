@@ -1,8 +1,78 @@
 # =========================================================
 # MAIN FILE
+# FULL RGB COLOR VERSION
 # =========================================================
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+
+# =========================================================
+# FULL COLOR UI SYSTEM
+# =========================================================
+
+$Host.UI.RawUI.WindowTitle = "YT SHORTS CONVERTER PRO"
+
+function Write-Title($text) {
+
+    Write-Host ""
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host " $text" -ForegroundColor Cyan
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host ""
+}
+
+function Write-Success($text) {
+
+    Write-Host "[SUCCESS] $text" -ForegroundColor Green
+}
+
+function Write-ErrorMsg($text) {
+
+    Write-Host "[ERROR] $text" -ForegroundColor Red
+}
+
+function Write-Warn($text) {
+
+    Write-Host "[WARNING] $text" -ForegroundColor Yellow
+}
+
+function Write-Info($text) {
+
+    Write-Host "[INFO] $text" -ForegroundColor Magenta
+}
+
+function Show-Loading($text) {
+
+    Write-Host ""
+    Write-Host "$text" -ForegroundColor Yellow
+
+    for ($i = 0; $i -lt 5; $i++) {
+
+        Write-Host "■" -NoNewline -ForegroundColor Cyan
+        Start-Sleep -Milliseconds 200
+    }
+
+    Write-Host ""
+    Write-Host ""
+}
+
+function Show-Banner {
+
+    Clear-Host
+
+    Write-Host ""
+    Write-Host "██╗   ██╗████████╗    ███████╗██╗  ██╗ ██████╗ ██████╗ ████████╗███████╗" -ForegroundColor Cyan
+    Write-Host "╚██╗ ██╔╝╚══██╔══╝    ██╔════╝██║  ██║██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝" -ForegroundColor Blue
+    Write-Host " ╚████╔╝    ██║       ███████╗███████║██║   ██║██████╔╝   ██║   ███████╗" -ForegroundColor Magenta
+    Write-Host "  ╚██╔╝     ██║       ╚════██║██╔══██║██║   ██║██╔══██╗   ██║   ╚════██║" -ForegroundColor Red
+    Write-Host "   ██║      ██║       ███████║██║  ██║╚██████╔╝██║  ██║   ██║   ███████║" -ForegroundColor Yellow
+    Write-Host "   ╚═╝      ╚═╝       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝" -ForegroundColor Green
+
+    Write-Host ""
+    Write-Host "============================================================" -ForegroundColor DarkGray
+    Write-Host "               YT SHORTS CONVERTER PRO" -ForegroundColor White
+    Write-Host "============================================================" -ForegroundColor DarkGray
+    Write-Host ""
+}
 
 # =========================================================
 # LOAD CORE FILES FROM GITHUB
@@ -41,11 +111,11 @@ do {
     # =====================================================
 
     Write-Host ""
-    Write-Host "================================================="
-    Write-Host "CREATE MONTAGE SHORT?"
-    Write-Host "================================================="
-    Write-Host "1. Yes"
-    Write-Host "2. No"
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host "CREATE MONTAGE SHORT?" -ForegroundColor Cyan
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host "1. Yes" -ForegroundColor Green
+    Write-Host "2. No" -ForegroundColor Red
     Write-Host ""
 
     $montageChoice = Read-Host "Enter choice"
@@ -57,9 +127,9 @@ do {
     if ($montageChoice -eq "1") {
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "VIDEOS IN CURRENT FOLDER"
-        Write-Host "================================================="
+        Write-Host "=================================================" -ForegroundColor DarkMagenta
+        Write-Host "VIDEOS IN CURRENT FOLDER" -ForegroundColor Magenta
+        Write-Host "=================================================" -ForegroundColor DarkMagenta
         Write-Host ""
 
         $currentFolder = Get-Location
@@ -75,7 +145,7 @@ do {
         if ($allVideos.Count -eq 0) {
 
             Write-Host ""
-            Write-Host "NO VIDEOS FOUND!"
+            Write-Host "NO VIDEOS FOUND!" -ForegroundColor Red
             Write-Host ""
 
             pause
@@ -88,11 +158,11 @@ do {
 
         for ($i = 0; $i -lt $allVideos.Count; $i++) {
 
-            Write-Host "$($i + 1). $($allVideos[$i].Name)"
+            Write-Host "$($i + 1). $($allVideos[$i].Name)" -ForegroundColor White
         }
 
         Write-Host ""
-        Write-Host "Example: 1,2,3"
+        Write-Host "Example: 1,2,3" -ForegroundColor Yellow
         Write-Host ""
 
         $selection = `
@@ -137,10 +207,10 @@ do {
             $clip = $selectedVideos[$i]
 
             Write-Host ""
-            Write-Host "================================================="
-            Write-Host "TRIM SETTINGS FOR:"
-            Write-Host $clip.Name
-            Write-Host "================================================="
+            Write-Host "=================================================" -ForegroundColor DarkYellow
+            Write-Host "TRIM SETTINGS FOR:" -ForegroundColor Yellow
+            Write-Host $clip.Name -ForegroundColor White
+            Write-Host "=================================================" -ForegroundColor DarkYellow
             Write-Host ""
 
             $trimData = Get-TrimSettings
@@ -154,8 +224,10 @@ do {
             "$tempFolder\clip_$i.mp4"
 
             Write-Host ""
-            Write-Host "CREATING CLIP..."
+            Write-Host "CREATING CLIP..." -ForegroundColor Cyan
             Write-Host ""
+
+            Show-Loading "Processing Clip"
 
             ffmpeg -y `
             -ss $trimData.Start `
@@ -189,10 +261,12 @@ do {
         "Converted_Output\Montage_Final.mp4"
 
         Write-Host ""
-        Write-Host "================================================="
-        Write-Host "CREATING FINAL MONTAGE..."
-        Write-Host "================================================="
+        Write-Host "=================================================" -ForegroundColor DarkGreen
+        Write-Host "CREATING FINAL MONTAGE..." -ForegroundColor Green
+        Write-Host "=================================================" -ForegroundColor DarkGreen
         Write-Host ""
+
+        Show-Loading "Rendering Montage"
 
         ffmpeg -y `
         -f concat `
@@ -206,6 +280,8 @@ do {
         -c:a aac `
         -b:a 192k `
         "$montageOutput"
+
+        Write-Success "Montage Created Successfully!"
 
         $video = Get-Item $montageOutput
     }
@@ -231,11 +307,15 @@ do {
     # EFFECTS
     # =====================================================
 
+    Write-Info "Loading Effects..."
+
     $effectsFilter = Get-EffectsFilter
 
     # =====================================================
     # TEXT OVERLAY
     # =====================================================
+
+    Write-Info "Loading Text Overlay..."
 
     $textFilter = Get-TextOverlayFilter
 
@@ -243,11 +323,15 @@ do {
     # SOCIAL OVERLAY
     # =====================================================
 
+    Write-Info "Loading Social Overlay..."
+
     $socialFilter = Get-SocialOverlayFilter
 
     # =====================================================
     # SELECT MODE
     # =====================================================
+
+    Write-Info "Selecting Output Mode..."
 
     $modeData = Get-ModeSelection
 
@@ -331,6 +415,14 @@ do {
     # START CONVERSION
     # =====================================================
 
+    Write-Host ""
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host "STARTING CONVERSION..." -ForegroundColor Cyan
+    Write-Host "=================================================" -ForegroundColor DarkCyan
+    Write-Host ""
+
+    Show-Loading "Converting Video"
+
     Start-Conversion `
         -Video $video `
         -RatioName $modeData.Ratio `
@@ -338,17 +430,23 @@ do {
         -StartTime $trimData.Start `
         -EndTime $trimData.End
 
+    Write-Success "Conversion Completed!"
+
     # =====================================================
     # FINISHED
     # =====================================================
 
     Write-Host ""
-    Write-Host "================================================="
-    Write-Host "1. Convert Another Video"
-    Write-Host "2. Exit"
-    Write-Host "================================================="
+    Write-Host "=================================================" -ForegroundColor DarkGray
+    Write-Host "1. Convert Another Video" -ForegroundColor Green
+    Write-Host "2. Exit" -ForegroundColor Red
+    Write-Host "=================================================" -ForegroundColor DarkGray
     Write-Host ""
 
     $next = Read-Host "Enter choice"
 
 } while ($next -ne "2")
+
+Write-Host ""
+Write-Host "THANKS FOR USING YT SHORTS CONVERTER PRO!" -ForegroundColor Cyan
+Write-Host ""
