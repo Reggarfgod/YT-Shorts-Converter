@@ -20,6 +20,13 @@ iex (iwr "$repo/core/trim.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/effects.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/textoverlay.ps1" -UseBasicParsing).Content
 iex (iwr "$repo/core/socialoverlay.ps1" -UseBasicParsing).Content
+iex (iwr "$repo/core/keyauth.ps1" -UseBasicParsing).Content
+
+# =========================================================
+# LICENSE AUTH
+# =========================================================
+
+Confirm-License
 
 # =========================================================
 # MAIN LOOP
@@ -103,7 +110,7 @@ do {
         }
 
         # =================================================
-        # TEMP FOLDERS
+        # TEMP FOLDER
         # =================================================
 
         $tempFolder = `
@@ -216,6 +223,7 @@ do {
     # =====================================================
 
     if ($null -eq $video) {
+
         break
     }
 
@@ -244,6 +252,7 @@ do {
     $modeData = Get-ModeSelection
 
     if ($null -eq $modeData) {
+
         break
     }
 
@@ -256,6 +265,7 @@ do {
         $trimData = Get-TrimSettings
 
         if ($null -eq $trimData) {
+
             break
         }
     }
@@ -305,17 +315,18 @@ do {
     # SOCIAL PNG OVERLAY
     # =====================================================
 
-if ($socialFilter -ne "") {
+    if ($socialFilter -ne "") {
 
-    $finalFilter = `
-    $finalFilter.Replace(
-        "[outv]",
-        "[base]"
-    )
+        $finalFilter = `
+        $finalFilter.Replace(
+            "[outv]",
+            "[base]"
+        )
 
-    $finalFilter += `
-    ";" + $socialFilter
-}
+        $finalFilter += `
+        ";" + $socialFilter
+    }
+
     # =====================================================
     # START CONVERSION
     # =====================================================
