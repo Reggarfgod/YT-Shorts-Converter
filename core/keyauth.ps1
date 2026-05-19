@@ -69,11 +69,18 @@ function Confirm-License {
         -Method Get
 
         # =================================================
+        # GET KEY DATA
+        # =================================================
+
+        $keyData = `
+        $json.keys[$userKey]
+
+        # =================================================
         # INVALID KEY
         # =================================================
 
         if (
-            !$json.keys.$userKey
+            $null -eq $keyData
         ) {
 
             Write-Host ""
@@ -91,7 +98,7 @@ function Confirm-License {
         # =================================================
 
         if (
-            $json.keys.$userKey.master -eq $true
+            $keyData.master -eq $true
         ) {
 
             Write-Host ""
@@ -108,7 +115,7 @@ function Confirm-License {
         # =================================================
 
         if (
-            $json.keys.$userKey.used -eq $true
+            $keyData.used -eq $true
         ) {
 
             Write-Host ""
@@ -122,7 +129,7 @@ function Confirm-License {
         }
 
         # =================================================
-        # VALID
+        # VALID KEY
         # =================================================
 
         Write-Host ""
