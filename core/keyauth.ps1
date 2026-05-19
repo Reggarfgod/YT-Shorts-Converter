@@ -53,26 +53,23 @@ function Confirm-License {
     # =====================================================
     # VERIFY URL
     # =====================================================
+$encoded = `
+"aHR0cDovLzQ1LjE0MS4zNi43NDoyMDA2L3ZlcmlmeQ=="
 
-    $p1 = "aHR0cDov"
-    $p2 = "LzQ1LjE0"
-    $p3 = "MS4zNi43"
-    $p4 = "NDoyMDA2"
-    $p5 = "L3Zlcmlm"
-    $p6 = "eQ=="
-
-    $encoded = `
-    "$p1$p2$p3$p4$p5$p6"
-
-    $baseUrl = `
-    [System.Text.Encoding]::UTF8.GetString(
-        [System.Convert]::FromBase64String(
-            $encoded
-        )
+$baseUrl = `
+[System.Text.Encoding]::UTF8.GetString(
+    [System.Convert]::FromBase64String(
+        $encoded
     )
+)
 
-    $verifyUrl = `
-    "$baseUrl?key=$userKey"
+$verifyUrl = `
+"$baseUrl?key=$userKey"
+
+Write-Host ""
+Write-Host "DEBUG URL:"
+Write-Host $verifyUrl
+Write-Host ""
 
     try {
 
