@@ -4,8 +4,7 @@ function Confirm-License {
     # DISCORD INVITE
     # =====================================================
 
-    $discordInvite = `
-    "https://discord.gg/CN962KMpJk"
+    $discordInvite = "https://discord.gg/CN962KMpJk"
 
     Write-Host ""
     Write-Host "================================================="
@@ -35,8 +34,7 @@ function Confirm-License {
     # ASK KEY
     # =====================================================
 
-    $userKey = `
-    Read-Host "Enter Access Key"
+    $userKey = Read-Host "Enter Access Key"
 
     if ([string]::IsNullOrWhiteSpace($userKey)) {
 
@@ -51,25 +49,25 @@ function Confirm-License {
     }
 
     # =====================================================
-    # VERIFY URL
+    # ENCODED VERIFY URL
     # =====================================================
-$encoded = `
-"aHR0cDovLzQ1LjE0MS4zNi43NDoyMDA2L3ZlcmlmeQ=="
 
-$baseUrl = `
-[System.Text.Encoding]::UTF8.GetString(
-    [System.Convert]::FromBase64String(
-        $encoded
-    )
-)
+    $encoded = "aHR0cDovLzQ1LjE0MS4zNi43NDoyMDA2L3ZlcmlmeQ=="
 
-$verifyUrl = `
-"$baseUrl?key=$userKey"
+    $bytes = [System.Convert]::FromBase64String($encoded)
 
-Write-Host ""
-Write-Host "DEBUG URL:"
-Write-Host $verifyUrl
-Write-Host ""
+    $baseUrl = [System.Text.Encoding]::UTF8.GetString($bytes)
+
+    $verifyUrl = "$baseUrl?key=$userKey"
+
+    # =====================================================
+    # DEBUG URL
+    # =====================================================
+
+    Write-Host ""
+    Write-Host "DEBUG URL:"
+    Write-Host $verifyUrl
+    Write-Host ""
 
     try {
 
@@ -77,21 +75,17 @@ Write-Host ""
         # VERIFY KEY
         # =================================================
 
-        $response = `
-        Invoke-WebRequest `
-        -Uri $verifyUrl `
-        -UseBasicParsing
+        $response = Invoke-WebRequest `
+            -Uri $verifyUrl `
+            -UseBasicParsing
 
-        $result = `
-        $response.Content.Trim()
+        $result = $response.Content.Trim()
 
         # =================================================
         # VALID KEY
         # =================================================
 
-        if (
-            $result -eq "VALID_KEY"
-        ) {
+        if ($result -eq "VALID_KEY") {
 
             Write-Host ""
             Write-Host "================================================="
@@ -115,6 +109,7 @@ Write-Host ""
         pause
         exit
     }
+
     catch {
 
         Write-Host ""
@@ -129,6 +124,10 @@ Write-Host ""
         Write-Host "2. Express API added"
         Write-Host "3. Port 2006 open"
         Write-Host "4. Correct server IP"
+        Write-Host ""
+
+        Write-Host "ERROR:"
+        Write-Host $_.Exception.Message
         Write-Host ""
 
         pause
