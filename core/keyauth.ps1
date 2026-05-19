@@ -5,7 +5,7 @@ function Confirm-License {
     # =====================================================
 
     $discordInvite = `
-    "https://discord.gg/YOUR_INVITE_LINK"
+    "https://discord.gg/CN962KMpJk"
 
     Write-Host ""
     Write-Host "================================================="
