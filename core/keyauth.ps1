@@ -51,59 +51,37 @@ function Confirm-License {
     }
 
     # =====================================================
-    # VERIFY URL
+    # VERIFY API URL
     # =====================================================
 
     $verifyUrl = `
-    "https://raw.githubusercontent.com/Reggarfgod/YT-Shorts-Converter/main/keys.json"
+    "http://45.141.36.74:2006/verify?key=$userKey"
 
     try {
 
         # =================================================
-        # DOWNLOAD KEYS
+        # VERIFY KEY
         # =================================================
 
-        $json = `
-        Invoke-RestMethod `
+        $response = `
+        Invoke-WebRequest `
         -Uri $verifyUrl `
-        -Method Get
+        -UseBasicParsing
+
+        $result = `
+        $response.Content.Trim()
 
         # =================================================
-        # GET KEY DATA
-        # =================================================
-
-        $keyData = `
-        $json.keys[$userKey]
-
-        # =================================================
-        # INVALID KEY
+        # VALID KEY
         # =================================================
 
         if (
-            $null -eq $keyData
+            $result -eq "VALID_KEY"
         ) {
 
             Write-Host ""
             Write-Host "================================================="
-            Write-Host "INVALID KEY!"
-            Write-Host "================================================="
-            Write-Host ""
-
-            pause
-            exit
-        }
-
-        # =================================================
-        # MASTER KEY
-        # =================================================
-
-        if (
-            $keyData.master -eq $true
-        ) {
-
-            Write-Host ""
-            Write-Host "================================================="
-            Write-Host "MASTER KEY VERIFIED!"
+            Write-Host "KEY VERIFIED!"
             Write-Host "================================================="
             Write-Host ""
 
@@ -111,33 +89,17 @@ function Confirm-License {
         }
 
         # =================================================
-        # USED KEY
-        # =================================================
-
-        if (
-            $keyData.used -eq $true
-        ) {
-
-            Write-Host ""
-            Write-Host "================================================="
-            Write-Host "KEY ALREADY USED!"
-            Write-Host "================================================="
-            Write-Host ""
-
-            pause
-            exit
-        }
-
-        # =================================================
-        # VALID KEY
+        # INVALID KEY
         # =================================================
 
         Write-Host ""
         Write-Host "================================================="
-        Write-Host "KEY VERIFIED!"
+        Write-Host "INVALID OR USED KEY!"
         Write-Host "================================================="
         Write-Host ""
 
+        pause
+        exit
     }
     catch {
 
@@ -145,6 +107,14 @@ function Confirm-License {
         Write-Host "================================================="
         Write-Host "AUTH SERVER ERROR!"
         Write-Host "================================================="
+        Write-Host ""
+
+        Write-Host "CHECK:"
+        Write-Host ""
+        Write-Host "1. Bot is running"
+        Write-Host "2. Express API added"
+        Write-Host "3. Port 2006 open"
+        Write-Host "4. Correct server IP"
         Write-Host ""
 
         pause
